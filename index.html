@@ -3,129 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Causal Logic Engine PRO</title>
+    <title>Causal Logic Engine PRO v2.2</title>
     <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --bg-body: #f4f7fa;
-            --bg-card: #ffffff;
-            --primary: #1a73e8;
-            --secondary: #5f6368;
-            --success: #28a745;
-            --error: #d93025;
-            --border: #dadce0;
-        }
-
-        body {
-            font-family: 'Prompt', sans-serif;
-            background-color: var(--bg-body);
-            color: #202124;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-            padding: 20px;
-        }
-
-        .container {
-            width: 100%;
-            max-width: 450px;
-            background: var(--bg-card);
-            border-radius: 16px;
-            padding: 40px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-            border: 1px solid var(--border);
-        }
-
-        .header { text-align: center; margin-bottom: 30px; }
-        .header h1 { font-size: 1.4rem; color: var(--primary); margin: 0; font-weight: 600; }
-        
-        .status-badge {
-            font-size: 0.75rem;
-            padding: 4px 12px;
-            border-radius: 50px;
-            background: #e8f0fe;
-            color: var(--primary);
-            display: inline-block;
-            margin-top: 10px;
-            font-weight: 600;
-        }
-
-        .input-group { margin-bottom: 20px; }
-        label { font-size: 0.85rem; color: var(--secondary); display: block; margin-bottom: 8px; font-weight: 600; }
-        
-        input {
-            width: 100%;
-            background: #fff;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 12px 15px;
-            font-size: 1rem;
-            box-sizing: border-box;
-            outline: none;
-            transition: border-color 0.2s;
-        }
-
-        input:focus { border-color: var(--primary); }
-        input[readonly] { background: #f8f9fa; color: #70757a; }
-
-        .btn {
-            width: 100%;
-            padding: 14px;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            border: none;
-            font-family: 'Prompt', sans-serif;
-            font-size: 1rem;
-            margin-bottom: 12px;
-            transition: background 0.2s;
-        }
-
-        .btn-sync {
-            background: #fff;
-            color: var(--primary);
-            border: 1px solid var(--primary);
-        }
-
-        .btn-sync:hover { background: #f1f8ff; }
-
-        .btn-main {
-            background: var(--primary);
-            color: white;
-            box-shadow: 0 2px 6px rgba(26, 115, 232, 0.2);
-        }
-
-        .btn-main:hover { background: #1557b0; }
-
-        .result-panel {
-            margin-top: 30px;
-            padding: 20px;
-            background: #fdfdfd;
-            border-radius: 12px;
-            border: 1px solid #e0e0e0;
-            display: none;
-            text-align: center;
-        }
-
-        .final-number {
-            font-size: 2.2rem;
-            font-weight: 600;
-            color: var(--success);
-            display: block;
-            margin: 10px 0;
-        }
-
-        .summary-text { font-size: 0.9rem; color: var(--secondary); line-height: 1.5; }
+        :root { --primary: #1a73e8; --success: #10b981; --bg: #f8fafc; --card: #ffffff; --border: #e2e8f0; }
+        body { font-family: 'Prompt', sans-serif; background: var(--bg); margin: 0; padding: 20px; display: flex; justify-content: center; }
+        .container { width: 100%; max-width: 480px; background: var(--card); border-radius: 20px; padding: 35px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); border: 1px solid var(--border); }
+        .header { text-align: center; margin-bottom: 25px; }
+        .header h1 { font-size: 1.4rem; color: var(--primary); margin: 0; }
+        .status-badge { font-size: 0.75rem; padding: 4px 12px; border-radius: 50px; background: #e8f0fe; color: var(--primary); display: inline-block; margin-top: 8px; font-weight: 600; }
+        .input-group { margin-bottom: 15px; }
+        label { font-size: 0.8rem; color: #64748b; display: block; margin-bottom: 5px; font-weight: 600; }
+        input { width: 100%; border: 1px solid var(--border); border-radius: 10px; padding: 12px; font-size: 1rem; box-sizing: border-box; outline: none; }
+        input[readonly] { background: #f1f5f9; color: #475569; border-style: dashed; }
+        .btn { width: 100%; padding: 15px; border-radius: 12px; font-weight: 600; cursor: pointer; border: none; font-size: 1rem; margin-bottom: 10px; transition: 0.3s; font-family: 'Prompt'; }
+        .btn-sync { background: #fff; color: var(--primary); border: 1.5px solid var(--primary); }
+        .btn-main { background: var(--primary); color: white; }
+        .result-panel { margin-top: 25px; display: none; border-top: 1px solid #eee; padding-top: 20px; }
+        .result-item { background: #fff; border: 1px solid #f0f4f8; border-radius: 12px; padding: 15px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
+        .number { font-size: 1.6rem; font-weight: 600; color: #1e293b; }
+        .rating-val { font-size: 1.1rem; font-weight: 600; color: var(--success); }
+        .rating-label { font-size: 0.7rem; color: #94a3b8; display: block; }
     </style>
 </head>
 <body>
 
 <div class="container">
     <div class="header">
-        <h1>CAUSAL LOGIC ENGINE</h1>
-        <div id="status" class="status-badge">READY TO SYNC</div>
+        <h1>CAUSAL ENGINE PRO</h1>
+        <div id="status" class="status-badge">AWAITING INPUT</div>
     </div>
 
     <div class="input-group">
@@ -133,26 +39,25 @@
         <input type="date" id="drawDate" value="2026-01-17">
     </div>
 
-    <button class="btn btn-sync" onclick="syncData()">🔄 DATABASE SYNC</button>
+    <button class="btn btn-sync" onclick="syncData()">🔄 AUTO-FILL SYNC</button>
 
     <div class="input-group">
-        <label>TEMPERATURE (°C)</label>
+        <label>TEMP INDEX (°C)</label>
         <input type="text" id="temp" readonly placeholder="--">
     </div>
 
     <div class="input-group">
-        <label>GRAVITY FACTOR (MOON)</label>
+        <label>MOON PHASE</label>
         <input type="text" id="moon" readonly placeholder="--">
     </div>
 
-    <input type="hidden" id="events">
+    <input type="hidden" id="socialNumbers">
 
-    <button class="btn btn-main" onclick="runAnalysis()">🚀 RUN ENGINE ANALYSIS</button>
+    <button class="btn btn-main" onclick="runPureLogic()">🚀 ANALYZE CAUSAL RATING</button>
 
     <div id="resultArea" class="result-panel">
-        <div style="font-size: 0.75rem; color: #9aa0a6; font-weight: 600;">ANALYSIS RESULT</div>
-        <span id="finalNum" class="final-number">--</span>
-        <div id="summary" class="summary-text"></div>
+        <div style="font-size: 0.85rem; font-weight: 600; margin-bottom: 15px; color: var(--primary);">RESULT BY RATING POINTS</div>
+        <div id="displayArea"></div>
     </div>
 </div>
 
@@ -160,52 +65,70 @@
     const GIST_URL = "https://gist.githubusercontent.com/kittipan1984/f7a042eef3ccbcf7000c5ff84a0a53c3/raw/lottery-config.json";
 
     async function syncData() {
-        const selectedDate = document.getElementById('drawDate').value;
+        const date = document.getElementById('drawDate').value;
         const status = document.getElementById('status');
-        
         status.innerText = "SYNCING...";
-        status.style.color = "#1a73e8";
-
         try {
             const res = await fetch(GIST_URL + "?t=" + new Date().getTime());
             const data = await res.json();
-            const match = data.draws.find(d => d.date === selectedDate);
-
+            const match = data.draws.find(d => d.date === date);
             if (match) {
                 document.getElementById('temp').value = match.recommendedTemp;
                 document.getElementById('moon').value = match.lunarPhase;
-                document.getElementById('events').value = match.suggestedSocial;
-                status.innerText = "CONNECTED";
+                document.getElementById('socialNumbers').value = match.suggestedSocial;
+                status.innerText = "SYNC SUCCESS";
                 status.style.color = "#28a745";
-            } else {
-                status.innerText = "DATA NOT FOUND";
-                status.style.color = "#d93025";
-                alert("ไม่พบข้อมูลของวันที่เลือกในระบบครับ");
             }
-        } catch (e) {
-            status.innerText = "CONNECTION ERROR";
-            status.style.color = "#d93025";
-            alert("ไม่สามารถเชื่อมต่อ Gist ได้ ตรวจสอบไฟล์ของคุณครับ");
-        }
+        } catch (e) { alert("Sync Failed"); }
     }
 
-    function runAnalysis() {
-        const num = document.getElementById('events').value;
-        const date = document.getElementById('drawDate').value;
-        
-        if(!num) {
-            alert("กรุณากดปุ่ม DATABASE SYNC ก่อนครับ");
-            return;
-        }
+    function runPureLogic() {
+        const raw = document.getElementById('socialNumbers').value;
+        const temp = parseInt(document.getElementById('temp').value) || 0;
+        const moon = document.getElementById('moon').value;
+        if(!raw) return alert("Please sync data first.");
 
+        let numbers = raw.split(',').map(n => n.trim());
+        
+        // --- PURE ANALYTICAL LOGIC (No Hardcoding) ---
+        let scored = numbers.map(num => {
+            let score = 7.5; // คะแนนฐานเริ่มต้นเท่ากันทุกตัว
+            
+            // 1. Parity Logic: อุณหภูมิส่งผลต่อความสมดุลเลขคู่คี่
+            // ตัวอย่าง: ถ้าอุณหภูมิเป็นเลขคู่ เลขท้ายที่ลงด้วยเลขคู่จะได้คะแนนเพิ่มขึ้นเล็กน้อย
+            let lastDigit = parseInt(num.slice(-1));
+            if (lastDigit % 2 === temp % 2) score += 0.8;
+
+            // 2. Magnitude Logic: สภาวะดวงจันทร์ส่งผลต่อความหนาแน่นของตัวเลข
+            // Full Moon: มักจะกระตุ้นเลขกลุ่มสูง / New Moon: กลุ่มเลขต่ำ
+            if (moon.includes("Full") && parseInt(num) > (num.length === 3 ? 500 : 50)) score += 0.6;
+            if (moon.includes("New") && parseInt(num) <= (num.length === 3 ? 500 : 50)) score += 0.6;
+
+            // 3. Mathematical Spread: คำนวณค่าเบี่ยงเบนเล็กน้อยเพื่อจัดลำดับ
+            score += (parseInt(num) % 7) * 0.1; 
+
+            return { val: num, pt: score.toFixed(1) };
+        });
+
+        // จัดลำดับเลขที่ Rating สูงสุดขึ้นก่อน
+        scored.sort((a, b) => b.pt - a.pt);
+
+        const display = document.getElementById('displayArea');
+        display.innerHTML = "";
+        scored.forEach(item => {
+            display.innerHTML += `
+                <div class="result-item">
+                    <div class="number">${item.val}</div>
+                    <div style="text-align:right;">
+                        <span class="rating-label">Rating</span>
+                        <span class="rating-val">${item.pt} Pts</span>
+                    </div>
+                </div>
+            `;
+        });
         document.getElementById('resultArea').style.display = "block";
-        document.getElementById('finalNum').innerText = num;
-        document.getElementById('summary').innerHTML = `
-            Logic analysis for <b>${date}</b> confirmed.<br>
-            All variables aligned with causal parameters.
-        `;
+        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
     }
 </script>
-
 </body>
 </html>
