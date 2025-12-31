@@ -8,7 +8,7 @@
     <style>
         :root {
             --bg-color: #0f172a;
-            --card-bg: rgba(30, 41, 59, 0.7);
+            --card-bg: rgba(30, 41, 59, 0.8);
             --primary-accent: #38bdf8;
             --success-accent: #10b981;
             --danger-accent: #ef4444;
@@ -39,11 +39,7 @@
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
         }
 
-        .header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
+        .header { text-align: center; margin-bottom: 30px; }
         .header h1 {
             font-size: 1.5rem;
             margin: 0;
@@ -61,20 +57,12 @@
             color: var(--primary-accent);
             display: inline-block;
             margin-top: 8px;
+            font-weight: 600;
         }
 
-        .input-group {
-            margin-bottom: 20px;
-        }
-
-        label {
-            font-size: 0.85rem;
-            color: var(--text-dim);
-            display: block;
-            margin-bottom: 8px;
-            margin-left: 4px;
-        }
-
+        .input-group { margin-bottom: 20px; }
+        label { font-size: 0.85rem; color: var(--text-dim); display: block; margin-bottom: 8px; }
+        
         input {
             width: 100%;
             background: rgba(15, 23, 42, 0.6);
@@ -84,18 +72,6 @@
             color: white;
             font-size: 1rem;
             box-sizing: border-box;
-            transition: all 0.3s ease;
-        }
-
-        input:focus {
-            outline: none;
-            border-color: var(--primary-accent);
-            box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2);
-        }
-
-        input[readonly] {
-            color: #64748b;
-            cursor: default;
         }
 
         .btn {
@@ -104,10 +80,10 @@
             border-radius: 12px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.2s ease;
             border: none;
             font-family: 'Prompt', sans-serif;
             font-size: 1rem;
+            transition: 0.3s;
         }
 
         .btn-sync {
@@ -117,19 +93,9 @@
             margin-bottom: 16px;
         }
 
-        .btn-sync:hover {
-            background: rgba(56, 189, 248, 0.2);
-        }
-
         .btn-main {
             background: linear-gradient(135deg, #0ea5e9, #2563eb);
             color: white;
-            box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.3);
-        }
-
-        .btn-main:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 20px 25px -5px rgba(37, 99, 235, 0.4);
         }
 
         .result-panel {
@@ -139,28 +105,16 @@
             border-radius: 16px;
             border: 1px solid rgba(255, 255, 255, 0.05);
             display: none;
-            animation: fadeIn 0.5s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+            text-align: center;
         }
 
         .final-number {
             font-size: 2.5rem;
             font-weight: 600;
-            text-align: center;
-            display: block;
-            margin: 15px 0;
             color: var(--success-accent);
+            display: block;
+            margin: 10px 0;
             text-shadow: 0 0 20px rgba(16, 185, 129, 0.4);
-        }
-
-        .divider {
-            height: 1px;
-            background: rgba(255, 255, 255, 0.1);
-            margin: 24px 0;
         }
     </style>
 </head>
@@ -169,7 +123,7 @@
 <div class="container">
     <div class="header">
         <h1>CAUSAL LOGIC ENGINE</h1>
-        <div id="status" class="status-badge">System Ready</div>
+        <div id="status" class="status-badge">SYSTEM READY</div>
     </div>
 
     <div class="input-group">
@@ -178,8 +132,6 @@
     </div>
 
     <button class="btn btn-sync" onclick="syncData()">DATABASE SYNC</button>
-
-    <div class="divider"></div>
 
     <div class="input-group">
         <label>TEMPERATURE (°C)</label>
@@ -191,20 +143,19 @@
         <input type="text" id="moon" readonly placeholder="- -">
     </div>
 
-    <div class="input-group" style="display: none;">
-        <input type="text" id="events" readonly>
-    </div>
+    <input type="hidden" id="events">
 
     <button class="btn btn-main" onclick="runAnalysis()">RUN ENGINE ANALYSIS</button>
 
     <div id="resultArea" class="result-panel">
-        <div style="text-align: center; font-size: 0.8rem; color: var(--text-dim); text-transform: uppercase;">Analysis Result</div>
+        <div style="font-size: 0.8rem; color: var(--text-dim);">ANALYSIS RESULT</div>
         <span id="finalNum" class="final-number">- -</span>
-        <div id="summary" style="font-size: 0.85rem; text-align: center; line-height: 1.6; color: var(--text-dim);"></div>
+        <div id="summary" style="font-size: 0.85rem; color: var(--text-dim);"></div>
     </div>
 </div>
 
 <script>
+    // URL ตรงสู่ Gist ของคุณ
     const GIST_URL = "https://gist.githubusercontent.com/kittipan1984/f7a042eef3ccbcf7000c5ff84a0a53c3/raw/lottery-config.json";
 
     async function syncData() {
@@ -212,7 +163,8 @@
         const status = document.getElementById('status');
         
         status.innerText = "SYNCING...";
-        status.style.color = "var(--primary-accent)";
+        status.style.background = "rgba(56, 189, 248, 0.1)";
+        status.style.color = "#38bdf8";
 
         try {
             const res = await fetch(GIST_URL + "?t=" + new Date().getTime());
@@ -224,14 +176,16 @@
                 document.getElementById('moon').value = match.lunarPhase;
                 document.getElementById('events').value = match.suggestedSocial;
                 status.innerText = "CLOUD CONNECTED";
-                status.style.color = "var(--success-accent)";
+                status.style.color = "#10b981";
             } else {
                 status.innerText = "DATA NOT FOUND";
-                status.style.color = var(--danger-accent);
+                status.style.color = "#ef4444";
+                alert("ไม่พบข้อมูลของวันที่เลือกในระบบครับ");
             }
         } catch (e) {
             status.innerText = "CONNECTION ERROR";
-            status.style.color = var(--danger-accent);
+            status.style.color = "#ef4444";
+            alert("การเชื่อมต่อล้มเหลว ตรวจสอบอินเทอร์เน็ตครับ");
         }
     }
 
@@ -240,7 +194,7 @@
         const date = document.getElementById('drawDate').value;
         
         if(!num) {
-            alert("Please sync database first.");
+            alert("กรุณากด DATABASE SYNC ก่อนครับ");
             return;
         }
 
@@ -250,8 +204,6 @@
             Logic analysis for <b>${date}</b> confirmed.<br>
             All variables aligned with causal parameters.
         `;
-        
-        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
     }
 </script>
 
