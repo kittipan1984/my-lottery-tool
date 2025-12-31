@@ -1,0 +1,26 @@
+name: AI-Sync-Engine
+on:
+  schedule:
+    - cron: '0 5 1,15,16,30,31 * *' # รันเช็กช่วงวันออกรางวัล (เวลาสากล)
+  workflow_dispatch: # ปุ่มกดรันเองด้วยมือ
+
+jobs:
+  update-gist:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Process Causal Data
+        run: |
+          # กำหนดวันที่ปัจจุบัน
+          TARGET_DATE=$(date +%Y-%m-%d)
+          
+          # โครงสร้างข้อมูล JSON (คุณสามารถแก้เลขตรงนี้ หรือให้ AI มาเติมภายหลัง)
+          # หมายเหตุ: ต้องมีคำว่า "draws" นำหน้าเพื่อให้ Code HTML ของคุณหาเจอ
+          JSON_DATA="{\"draws\": [{\"date\": \"$TARGET_DATE\", \"suggestedSocial\": \"รอผลวิเคราะห์\", \"recommendedTemp\": \"28\", \"lunarPhase\": \"Normal\"}]}"
+          
+          # ส่งคำสั่งไป Update Gist
+          curl -L \
+            -X PATCH \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: Bearer ${{ secrets.GIST_TOKEN }}" \
+            -d "{\"files\":{\"lottery-config.json\":{\"content\":\"$JSON_DATA\"}}}" \
+            https://api.github.com/gists/${{ secrets.GIST_ID }}
