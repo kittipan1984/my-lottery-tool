@@ -79,7 +79,7 @@ async function syncData() {
         const data = await response.json();
         
         // ค้นหาข้อมูลที่วันที่ตรงกันในไฟล์ Gist
-        const match = data.draws.find(d => d.date === selectedDate);
+        const gistURL = "https://gist.githubusercontent.com/kittipan1984/f7a042eef3ccbcf7000c5ff84a0a53c3/raw/lottery-config.json";
 
         if (match) {
             document.getElementById('temp').value = match.recommendedTemp;
