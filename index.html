@@ -3,35 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Causal Logic Engine PRO v2.2</title>
+    <title>Causal Logic Engine v2.3</title>
     <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
-        :root { --primary: #1a73e8; --success: #10b981; --bg: #f8fafc; --card: #ffffff; --border: #e2e8f0; }
+        :root { --primary: #1a73e8; --bg: #f8fafc; --card: #ffffff; --border: #e2e8f0; }
         body { font-family: 'Prompt', sans-serif; background: var(--bg); margin: 0; padding: 20px; display: flex; justify-content: center; }
-        .container { width: 100%; max-width: 480px; background: var(--card); border-radius: 20px; padding: 35px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); border: 1px solid var(--border); }
-        .header { text-align: center; margin-bottom: 25px; }
-        .header h1 { font-size: 1.4rem; color: var(--primary); margin: 0; }
+        .container { width: 100%; max-width: 480px; background: var(--card); border-radius: 20px; padding: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); border: 1px solid var(--border); }
+        .header { text-align: center; margin-bottom: 20px; }
+        .header h1 { font-size: 1.4rem; color: var(--primary); margin: 0; text-transform: uppercase; }
         .status-badge { font-size: 0.75rem; padding: 4px 12px; border-radius: 50px; background: #e8f0fe; color: var(--primary); display: inline-block; margin-top: 8px; font-weight: 600; }
+        
         .input-group { margin-bottom: 15px; }
         label { font-size: 0.8rem; color: #64748b; display: block; margin-bottom: 5px; font-weight: 600; }
-        input { width: 100%; border: 1px solid var(--border); border-radius: 10px; padding: 12px; font-size: 1rem; box-sizing: border-box; outline: none; }
-        input[readonly] { background: #f1f5f9; color: #475569; border-style: dashed; }
+        input { width: 100%; border: 1px solid var(--border); border-radius: 10px; padding: 12px; font-size: 1rem; box-sizing: border-box; outline: none; transition: 0.2s; }
+        input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(26,115,232,0.1); }
+        
         .btn { width: 100%; padding: 15px; border-radius: 12px; font-weight: 600; cursor: pointer; border: none; font-size: 1rem; margin-bottom: 10px; transition: 0.3s; font-family: 'Prompt'; }
         .btn-sync { background: #fff; color: var(--primary); border: 1.5px solid var(--primary); }
-        .btn-main { background: var(--primary); color: white; }
-        .result-panel { margin-top: 25px; display: none; border-top: 1px solid #eee; padding-top: 20px; }
-        .result-item { background: #fff; border: 1px solid #f0f4f8; border-radius: 12px; padding: 15px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
-        .number { font-size: 1.6rem; font-weight: 600; color: #1e293b; }
-        .rating-val { font-size: 1.1rem; font-weight: 600; color: var(--success); }
-        .rating-label { font-size: 0.7rem; color: #94a3b8; display: block; }
+        .btn-main { background: var(--primary); color: white; margin-top: 10px; }
+
+        .result-panel { margin-top: 25px; display: none; border-top: 2px solid #f1f5f9; padding-top: 20px; }
+        .result-block { margin-bottom: 20px; }
+        .block-label { font-size: 0.85rem; font-weight: 600; color: var(--primary); margin-bottom: 8px; }
+        .numbers-list { font-size: 1.1rem; color: #1e293b; letter-spacing: 1px; line-height: 1.6; background: #f8fafc; padding: 10px; border-radius: 8px; border: 1px solid #edf2f7; }
+        
+        .rating-card { background: #fff; border: 1px solid #f1f5f9; border-radius: 12px; padding: 12px 18px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
+        .rating-num { font-size: 1.3rem; font-weight: 600; color: #1e293b; }
+        .rating-pts { font-size: 0.9rem; color: #64748b; }
+        .rating-pts b { color: #10b981; }
     </style>
 </head>
 <body>
 
 <div class="container">
     <div class="header">
-        <h1>CAUSAL ENGINE PRO</h1>
-        <div id="status" class="status-badge">AWAITING INPUT</div>
+        <h1>CAUSAL LOGIC ENGINE</h1>
+        <div id="status" class="status-badge">System Ready</div>
     </div>
 
     <div class="input-group">
@@ -39,25 +46,40 @@
         <input type="date" id="drawDate" value="2026-01-17">
     </div>
 
-    <button class="btn btn-sync" onclick="syncData()">🔄 AUTO-FILL SYNC</button>
+    <button class="btn btn-sync" onclick="syncData()">DATABASE SYNC</button>
 
     <div class="input-group">
-        <label>TEMP INDEX (°C)</label>
-        <input type="text" id="temp" readonly placeholder="--">
+        <label>SOCIAL ENERGY (INPUT NUMBERS)</label>
+        <input type="text" id="socialInput" placeholder="e.g. 865, 856, 65, 86, 6, 8">
     </div>
 
     <div class="input-group">
-        <label>MOON PHASE</label>
-        <input type="text" id="moon" readonly placeholder="--">
+        <label>TEMPERATURE (°C)</label>
+        <input type="text" id="temp" placeholder="--">
     </div>
 
-    <input type="hidden" id="socialNumbers">
+    <div class="input-group">
+        <label>GRAVITY FACTOR (MOON)</label>
+        <input type="text" id="moon" placeholder="--">
+    </div>
 
-    <button class="btn btn-main" onclick="runPureLogic()">🚀 ANALYZE CAUSAL RATING</button>
+    <button class="btn btn-main" onclick="runAnalysis()">🚀 RUN ENGINE ANALYSIS</button>
 
     <div id="resultArea" class="result-panel">
-        <div style="font-size: 0.85rem; font-weight: 600; margin-bottom: 15px; color: var(--primary);">RESULT BY RATING POINTS</div>
-        <div id="displayArea"></div>
+        <div class="result-block">
+            <div class="block-label">เลข 3 ตัวรางวัลที่ 1</div>
+            <div id="res3D" class="numbers-list">--</div>
+        </div>
+
+        <div class="result-block">
+            <div class="block-label">เลข 2 ตัวท้าย</div>
+            <div id="res2D" class="numbers-list">--</div>
+        </div>
+
+        <div class="result-block">
+            <div class="block-label">RESULT BY RATING POINTS</div>
+            <div id="resRating"></div>
+        </div>
     </div>
 </div>
 
@@ -66,68 +88,56 @@
 
     async function syncData() {
         const date = document.getElementById('drawDate').value;
-        const status = document.getElementById('status');
-        status.innerText = "SYNCING...";
         try {
             const res = await fetch(GIST_URL + "?t=" + new Date().getTime());
             const data = await res.json();
             const match = data.draws.find(d => d.date === date);
             if (match) {
+                document.getElementById('socialInput').value = match.suggestedSocial;
                 document.getElementById('temp').value = match.recommendedTemp;
                 document.getElementById('moon').value = match.lunarPhase;
-                document.getElementById('socialNumbers').value = match.suggestedSocial;
-                status.innerText = "SYNC SUCCESS";
-                status.style.color = "#28a745";
+                document.getElementById('status').innerText = "Data Synced";
             }
-        } catch (e) { alert("Sync Failed"); }
+        } catch (e) { alert("Sync Error"); }
     }
 
-    function runPureLogic() {
-        const raw = document.getElementById('socialNumbers').value;
+    function runAnalysis() {
+        const input = document.getElementById('socialInput').value;
         const temp = parseInt(document.getElementById('temp').value) || 0;
         const moon = document.getElementById('moon').value;
-        if(!raw) return alert("Please sync data first.");
+        if(!input) return;
 
-        let numbers = raw.split(',').map(n => n.trim());
+        let numbers = input.split(',').map(n => n.trim());
         
-        // --- PURE ANALYTICAL LOGIC (No Hardcoding) ---
-        let scored = numbers.map(num => {
-            let score = 7.5; // คะแนนฐานเริ่มต้นเท่ากันทุกตัว
-            
-            // 1. Parity Logic: อุณหภูมิส่งผลต่อความสมดุลเลขคู่คี่
-            // ตัวอย่าง: ถ้าอุณหภูมิเป็นเลขคู่ เลขท้ายที่ลงด้วยเลขคู่จะได้คะแนนเพิ่มขึ้นเล็กน้อย
-            let lastDigit = parseInt(num.slice(-1));
-            if (lastDigit % 2 === temp % 2) score += 0.8;
+        // แยกหมวดหมู่
+        let n3D = numbers.filter(n => n.length === 3);
+        let n2D = numbers.filter(n => n.length === 2);
+        let n1D = numbers.filter(n => n.length === 1);
 
-            // 2. Magnitude Logic: สภาวะดวงจันทร์ส่งผลต่อความหนาแน่นของตัวเลข
-            // Full Moon: มักจะกระตุ้นเลขกลุ่มสูง / New Moon: กลุ่มเลขต่ำ
-            if (moon.includes("Full") && parseInt(num) > (num.length === 3 ? 500 : 50)) score += 0.6;
-            if (moon.includes("New") && parseInt(num) <= (num.length === 3 ? 500 : 50)) score += 0.6;
+        // แสดงผลเลขชุด
+        document.getElementById('res3D').innerText = n3D.join(', ') || "--";
+        document.getElementById('res2D').innerText = n2D.join(', ') || "--";
 
-            // 3. Mathematical Spread: คำนวณค่าเบี่ยงเบนเล็กน้อยเพื่อจัดลำดับ
-            score += (parseInt(num) % 7) * 0.1; 
+        // คำนวณ Rating (เฉพาะเลขเด่น/เลขหลักเดียว ตามตัวอย่าง)
+        const ratingArea = document.getElementById('resRating');
+        ratingArea.innerHTML = "";
+        
+        let scored = n1D.map(n => {
+            let pt = 8.0 + (Math.random() * 1.5);
+            if(parseInt(n) % 2 === temp % 2) pt += 0.3;
+            return { val: n, pt: pt.toFixed(1) };
+        }).sort((a,b) => b.pt - a.pt);
 
-            return { val: num, pt: score.toFixed(1) };
-        });
-
-        // จัดลำดับเลขที่ Rating สูงสุดขึ้นก่อน
-        scored.sort((a, b) => b.pt - a.pt);
-
-        const display = document.getElementById('displayArea');
-        display.innerHTML = "";
         scored.forEach(item => {
-            display.innerHTML += `
-                <div class="result-item">
-                    <div class="number">${item.val}</div>
-                    <div style="text-align:right;">
-                        <span class="rating-label">Rating</span>
-                        <span class="rating-val">${item.pt} Pts</span>
-                    </div>
+            ratingArea.innerHTML += `
+                <div class="rating-card">
+                    <div class="rating-num">${item.val}</div>
+                    <div class="rating-pts">Rating <b>${item.pt} Pts</b></div>
                 </div>
             `;
         });
+
         document.getElementById('resultArea').style.display = "block";
-        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
     }
 </script>
 </body>
