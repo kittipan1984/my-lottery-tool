@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Causal Logic Engine - Live Sync</title>
+    <style>
+        :root { --primary: #1a73e8; --success: #28a745; --bg: #f0f2f5; }
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; background: var(--bg); padding: 20px; display: flex; justify-content: center; }
+        .card { background: white; width: 100%; max-width: 480px; padding: 30px; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        h2 { text-align: center; color: var(--primary); margin-bottom: 5px; }
+        .sub-text { text-align: center; font-size: 0.8em; color: #666; margin-bottom: 25px; }
+        
+        .input-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 6px; font-weight: bold; color: #444; font-size: 0.9em; }
+        input { width: 100%; padding: 12px; border: 2px solid #eee; border-radius: 10px; font-size: 16px; box-sizing: border-box; outline: none; transition: 0.3s; }
+        input:focus { border-color: var(--primary); }
+        input[readonly] { background: #f9f9f9; color: #777; cursor: not-allowed; }
+
+        .btn-sync { background: #e8f0fe; color: var(--primary); border: none; padding: 12px; width: 100%; border-radius: 10px; cursor: pointer; font-weight: bold; margin-bottom: 15px; transition: 0.3s; }
+        .btn-sync:hover { background: #d2e3fc; }
+        .btn-calc { background: var(--success); color: white; border: none; padding: 15px; width: 100%; border-radius: 10px; cursor: pointer; font-size: 18px; font-weight: bold; box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3); }
+        .btn-calc:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4); }
+        
+        .result-box { margin-top: 25px; padding: 20px; background: #f8f9fa; border-left: 5px solid var(--success); border-radius: 10px; display: none; }
+        #status-msg { font-size: 0.8em; text-align: center; margin-bottom: 10px; color: #28a745; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <h2>🧬 Causal Logic Engine</h2>
+    <div class="sub-text">ประมวลผลตามเวลามาตรฐาน 15:40 น.</div>
+
+    <div id="status-msg"></div>
+
+    <div class="input-group">
+        <label>📅 เลือกวันที่ต้องการคำนวณ (Calendar Icon)</label>
+        <input type="date" id="drawDate" value="2026-01-17">
+    </div>
+
+    <button class="btn-sync" onclick="syncData()">🔄 Sync ข้อมูลจากระบบ Cloud</button>
+
+    <div style="border-top: 1px solid #eee; margin: 20px 0;"></div>
+
+    <div class="input-group">
+        <label>🌡️ อุณหภูมิพยากรณ์ (°C)</label>
+        <input type="number" id="temp" placeholder="เลือกวันที่แล้วกด Sync..." readonly>
+    </div>
+
+    <div class="input-group">
+        <label>🌑 สภาวะดวงจันทร์ (Gravity Factor)</label>
+        <input type="text" id="moon" readonly>
+    </div>
+
+    <div class="input-group">
+        <label>🎆 เลข Social Energy (ค่ากลางกลุ่ม)</label>
+        <input type="text" id="events" placeholder="เลขที่วิเคราะห์จากกระแสสังคม" readonly>
+    </div>
+
+    <button class="btn-calc" onclick="runAnalysis()">🚀 เริ่มการวิเคราะห์เหตุและผล</button>
+
+    <div id="resultArea" class="result-box">
+        <strong style="color: var(--success);">📊 ผลการวิเคราะห์:</strong>
+        <p id="analysisOutput" style="font-size: 0.95em; line-height: 1.6; margin-top: 10px;"></p>
+    </div>
+</div>
+
+<script>
+async function syncData() {
+    const selectedDate = document.getElementById('drawDate').value;
+    // เปลี่ยน URL ด้านล่างเป็น Raw URL ของ Gist ของคุณจริงๆ
+    const gistURL = "https://gist.githubusercontent.com/kittipan1984/f7a042eef3ccbcf7000c5ff84a0a53c3/raw/lottery-config.json"; 
+    const statusMsg = document.getElementById('status-msg');
+
+    try {
+        // เพิ่ม Timestamp เพื่อป้องกันการจำค่าเก่า (Cache)
+        const response = await fetch(gistURL + "?t=" + new Date().getTime());
+        const data = await response.json();
+        
+        // ค้นหาข้อมูลที่วันที่ตรงกันในไฟล์ Gist
+        const match = data.draws.find(d => d.date === selectedDate);
+
+        if (match) {
+            document.getElementById('temp').value = match.recommendedTemp;
+            document.getElementById('moon').value = match.lunarPhase;
+            document.getElementById('events').value = match.suggestedSocial;
+            statusMsg.innerText = "✅ เชื่อมต่อข้อมูล Cloud งวดวันที่ " + selectedDate + " สำเร็จ";
+        } else {
+            statusMsg.style.color = "#d93025";
+            statusMsg.innerText = "⚠️ ไม่พบข้อมูลใน Gist (ใช้ระบบคำนวณสำรอง)";
+            // ระบบสำรองกรณีหุ่นยนต์ยังไม่ได้อัปเดต
+            autoFillBackup(selectedDate);
+        }
+    } catch (error) {
+        statusMsg.style.color = "#d93025";
+        statusMsg.innerText = "❌ การเชื่อมต่อล้มเหลว (ตรวจสอบไฟล์ Gist)";
+        autoFillBackup(selectedDate);
+    }
+}
+
+function autoFillBackup(dateStr) {
+    // Logic คำนวณเบื้องต้นหากไม่มีข้อมูลใน Gist
+    document.getElementById('temp').value = "25";
+    document.getElementById('moon').value = "Standard";
+    document.getElementById('events').value = "00, 11, 22"; // ตัวเลขตัวอย่าง
+}
+
+function runAnalysis() {
+    const date = document.getElementById('drawDate').value;
+    const temp = document.getElementById('temp').value;
+    
+    if(!temp) { alert("โปรดกดปุ่ม Sync ข้อมูลก่อนครับ"); return; }
+
+    document.getElementById('resultArea').style.display = "block";
+    document.getElementById('analysisOutput').innerHTML = 
+        `วิเคราะห์สภาวะฟิสิกส์ ณ วันที่: <b>${date}</b><br>` +
+        `สถานะ: <b>Causal Logic v1.3 Active</b><br>` +
+        `ระบบได้เตรียมโครงสร้างความน่าจะเป็นเรียบร้อยแล้ว`;
+}
+</script>
+
+</body>
+</html>
