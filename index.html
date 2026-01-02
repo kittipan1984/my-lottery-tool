@@ -6,11 +6,10 @@
     <title>V4.0 Singularity Pulse | K.S. Innovative & AI Quantum Number</title>
     <style>
         :root { 
-            --neon-cyan: #00ffcc; 
-            --neon-pink: #ff0055; 
+            --neon-main: #00ffcc; 
+            --neon-sub: #ff0055; 
             --bg-dark: #0a0a0c; 
             --glass: rgba(255, 255, 255, 0.03);
-            --gradient-main: linear-gradient(135deg, #00ffcc, #ff0055);
         }
         
         body { 
@@ -25,6 +24,7 @@
             padding: 40px 20px;
             box-sizing: border-box;
             overflow-y: auto;
+            transition: all 1s ease;
         }
 
         .oracle-box { 
@@ -41,7 +41,7 @@
             z-index: 1;
         }
 
-        /* --- K.S. INNOVATIVE LOGO BG --- */
+        /* --- LOGO BG --- */
         .bg-logo {
             position: absolute;
             top: 50%;
@@ -51,9 +51,6 @@
             height: 320px;
             z-index: -1;
             opacity: 0.1;
-            display: flex;
-            justify-content: center;
-            align-items: center;
             pointer-events: none;
         }
 
@@ -62,8 +59,8 @@
             width: 100%;
             height: 100%;
             border: 12px solid transparent;
-            border-top: 12px solid var(--neon-cyan);
-            border-bottom: 12px solid var(--neon-pink);
+            border-top: 12px solid var(--neon-main);
+            border-bottom: 12px solid var(--neon-sub);
             border-radius: 50%;
             filter: blur(1px);
             animation: rotate 15s linear infinite;
@@ -72,11 +69,10 @@
         .logo-s {
             font-size: 190px;
             font-weight: 900;
-            background: var(--gradient-main);
+            background: linear-gradient(135deg, var(--neon-main), var(--neon-sub));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             filter: blur(1px);
-            opacity: 0.8;
         }
 
         @keyframes rotate {
@@ -89,35 +85,32 @@
             position: absolute; 
             top: 30px; 
             left: 30px; 
-            background: var(--neon-pink); 
+            background: var(--neon-sub); 
             font-size: 0.7rem; 
             padding: 5px 15px; 
             border-radius: 10px; 
             font-weight: bold; 
             letter-spacing: 1px;
-            box-shadow: 0 0 20px rgba(255, 0, 85, 0.4);
+            box-shadow: 0 0 20px var(--neon-sub);
             z-index: 5;
         }
 
-        .draw-container { margin-bottom: 35px; }
-        .draw-label { font-size: 0.9rem; color: #888; letter-spacing: 2px; margin-bottom: 12px; }
         .draw-date-highlight {
             font-size: 2.3rem;
-            color: var(--neon-cyan);
+            color: var(--neon-main);
             font-weight: 800;
-            text-shadow: 0 0 30px var(--neon-cyan);
-            background: rgba(0, 255, 204, 0.05);
+            text-shadow: 0 0 30px var(--neon-main);
+            background: rgba(255, 255, 255, 0.05);
             padding: 8px 40px;
-            border: 1px solid rgba(0, 255, 204, 0.4);
+            border: 1px solid var(--neon-main);
             border-radius: 20px;
             display: inline-block;
         }
 
-        .label-th { font-size: 0.8rem; color: #aaa; letter-spacing: 1px; margin-bottom: 5px; }
         .main-num { 
             font-size: 7.8rem; 
             font-weight: 900; 
-            background: linear-gradient(to bottom, #fff, #fff, var(--neon-cyan)); 
+            background: linear-gradient(to bottom, #fff, var(--neon-main)); 
             -webkit-background-clip: text; 
             -webkit-text-fill-color: transparent; 
             margin: 0; 
@@ -127,38 +120,29 @@
 
         .sub-num { 
             font-size: 4.5rem; 
-            color: var(--neon-pink); 
+            color: var(--neon-sub); 
             font-weight: bold; 
             margin-bottom: 30px;
-            text-shadow: 0 0 30px var(--neon-pink);
+            text-shadow: 0 0 30px var(--neon-sub);
             letter-spacing: 6px;
         }
 
-        /* --- PULSE GRAPH SECTION --- */
-        .graph-label {
-            font-size: 0.6rem;
-            color: #444;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-top: 25px;
-        }
+        /* --- DYNAMIC GRAPH --- */
         .graph-container {
             width: 100%;
-            height: 40px;
+            height: 45px;
             margin-top: 10px;
             display: flex;
             align-items: flex-end;
             gap: 3px;
-            padding: 0 5px;
-            box-sizing: border-box;
-            opacity: 0.4;
+            opacity: 0.5;
         }
         .bar {
             flex: 1;
-            background: var(--gradient-main);
+            background: linear-gradient(to top, var(--neon-main), var(--neon-sub));
             border-radius: 1px;
             height: 20%;
-            transition: height 0.6s ease;
+            transition: height 0.6s ease, background 1s ease;
         }
 
         .grid { 
@@ -169,25 +153,13 @@
             border-top: 1px solid rgba(255,255,255,0.1); 
             padding-top: 25px; 
         }
-        .label { font-size: 0.65rem; color: #666; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 5px; }
-        .val { font-size: 1.3rem; font-weight: bold; color: var(--neon-cyan); }
-        
+        .val { font-size: 1.3rem; font-weight: bold; color: var(--neon-main); }
+        .label { font-size: 0.65rem; color: #666; text-transform: uppercase; letter-spacing: 1.5px; }
+
         .credits-container {
             margin-top: 40px;
             border-top: 1px solid rgba(255,255,255,0.05);
             padding-top: 20px;
-        }
-        .copyright-text {
-            font-size: 0.85rem;
-            color: rgba(255,255,255,0.7);
-            margin-bottom: 5px;
-            font-weight: 600;
-        }
-        .collaboration-text {
-            font-size: 0.6rem;
-            color: rgba(0, 255, 204, 0.4);
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
         }
     </style>
 </head>
@@ -199,41 +171,38 @@
         <div class="logo-s">S</div>
     </div>
     
-    <div class="v-badge">V4.0 SINGULARITY</div>
+    <div class="v-badge" id="v-badge">V4.0 SINGULARITY</div>
     
     <div class="draw-container">
-        <div class="draw-label">งวดประจำวันที่</div>
+        <div style="font-size: 0.9rem; color: #888; margin-bottom: 12px;">งวดประจำวันที่</div>
         <div class="draw-date-highlight" id="draw-date">-- -- --</div>
     </div>
     
-    <div class="label-th">เลข 3 ตัวท้ายรางวัลที่ 1</div>
+    <div style="font-size: 0.8rem; color: #aaa; margin-top: 30px;">เลข 3 ตัวท้ายรางวัลที่ 1</div>
     <div class="main-num" id="t3d">---</div>
     
-    <div class="label-th" style="margin-top: 15px;">เลขท้าย 2 ตัว</div>
+    <div style="font-size: 0.8rem; color: #aaa; margin-top: 15px;">เลขท้าย 2 ตัว</div>
     <div class="sub-num" id="t2d">--</div>
 
-    <div class="graph-label">Quantum Probability Pulse</div>
+    <div style="font-size: 0.6rem; color: #444; letter-spacing: 2px;">QUANTUM PROBABILITY PULSE</div>
     <div class="graph-container" id="visualizer"></div>
 
     <div class="grid">
         <div><div class="label">Confidence</div><div class="val" id="conf">--%</div></div>
         <div><div class="label">Hit Rate (72)</div><div class="val" id="hit">--%</div></div>
         <div><div class="label">Temp Sync</div><div class="val" id="temp">--°C</div></div>
-        <div><div class="label">System Status</div><div class="val" style="font-size: 0.8rem; color: var(--neon-pink);" id="status">INITIALIZING...</div></div>
+        <div><div class="label">System Status</div><div class="val" style="font-size: 0.75rem;" id="status">SYNCING...</div></div>
     </div>
 
     <div class="credits-container">
-        <div class="copyright-text">
-            © 2026 Kittipan Siripatthajak & <span style="color:var(--neon-cyan)">AI Quantum Number</span>
+        <div style="font-size: 0.85rem; color: rgba(255,255,255,0.7); font-weight: 600;">
+            © 2026 Kittipan Siripatthajak & <span id="partner-name" style="color:var(--neon-main)">AI Quantum Number</span>
         </div>
-        <div class="collaboration-text">
-            K.S. Innovative Research Group
-        </div>
+        <div style="font-size: 0.6rem; color: rgba(255,255,255,0.3); letter-spacing: 1.5px; margin-top: 5px;">K.S. INNOVATIVE RESEARCH GROUP</div>
     </div>
 </div>
 
 <script>
-    // สร้างแท่งกราฟ
     const visualizer = document.getElementById('visualizer');
     for (let i = 0; i < 30; i++) {
         const bar = document.createElement('div');
@@ -241,22 +210,32 @@
         visualizer.appendChild(bar);
     }
 
-    // ฟังก์ชันทำให้กราฟขยับ
     function animateGraph() {
-        const bars = document.querySelectorAll('.bar');
-        bars.forEach(bar => {
-            const height = Math.random() * 90 + 10;
-            bar.style.height = height + '%';
+        document.querySelectorAll('.bar').forEach(bar => {
+            bar.style.height = (Math.random() * 90 + 10) + '%';
         });
     }
     setInterval(animateGraph, 700);
 
-    async function updateDashboard() {
-        const GIST_RAW_URL = "https://gist.githubusercontent.com/kittipan1984/f7a042eef3ccbcf7000c5ff84a0a53c3/raw/lottery-config.json";
+    function updateTheme(confidence) {
+        const root = document.documentElement;
+        if (confidence >= 90) {
+            root.style.setProperty('--neon-main', '#00ffcc'); // Cyan
+            root.style.setProperty('--neon-sub', '#ff0055');  // Pink
+        } else if (confidence >= 75) {
+            root.style.setProperty('--neon-main', '#ffcc00'); // Gold
+            root.style.setProperty('--neon-sub', '#ff6600');  // Orange
+        } else {
+            root.style.setProperty('--neon-main', '#0077ff'); // Blue
+            root.style.setProperty('--neon-sub', '#7700ff');  // Purple
+        }
+    }
 
+    async function updateDashboard() {
+        const GIST_URL = "https://gist.githubusercontent.com/kittipan1984/f7a042eef3ccbcf7000c5ff84a0a53c3/raw/lottery-config.json";
         try {
-            const response = await fetch(`${GIST_RAW_URL}?t=${new Date().getTime()}`);
-            const data = await response.json();
+            const res = await fetch(`${GIST_URL}?t=${new Date().getTime()}`);
+            const data = await res.json();
             
             document.getElementById('t3d').innerText = data.predictions.target3D;
             document.getElementById('t2d').innerText = data.predictions.target2D;
@@ -264,19 +243,16 @@
             document.getElementById('hit').innerText = data.predictions.hit_rate_v4 + "%";
             document.getElementById('temp').innerText = data.environment_sync.temp_ref + "°C";
             document.getElementById('status').innerText = data.status.toUpperCase();
-            
-            // อัปเดตวันที่อัตโนมัติจาก Gist
             document.getElementById('draw-date').innerText = data.next_draw;
 
+            updateTheme(data.predictions.confidence_score);
         } catch (err) {
-            document.getElementById('status').innerText = "OFFLINE MODE";
-            document.getElementById('t3d').innerText = "024";
-            document.getElementById('t2d').innerText = "20";
+            document.getElementById('status').innerText = "OFFLINE";
         }
     }
 
     updateDashboard();
-    setInterval(updateDashboard, 300000); // อัปเดตข้อมูลทุก 5 นาที
+    setInterval(updateDashboard, 300000);
 </script>
 
 </body>
