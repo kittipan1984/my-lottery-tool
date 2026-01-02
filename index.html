@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>V4.0 Singularity Pulse | Kittipan & Gemini Collaboration</title>
+    <title>V4.0 Singularity Pulse | K.S. Innovative</title>
     <style>
         :root { 
             --neon-cyan: #00ffcc; 
             --neon-pink: #ff0055; 
             --bg-dark: #0a0a0c; 
             --glass: rgba(255, 255, 255, 0.03);
+            --gradient-modern: linear-gradient(135deg, #00ffcc 0%, #ff0055 100%);
         }
         body { 
             background: var(--bg-dark); 
@@ -21,20 +22,39 @@
             min-height: 100vh; 
             margin: 0;
             padding: 20px;
-            box-sizing: border-box;
         }
         .oracle-box { 
             background: var(--glass); 
-            border: 1px solid var(--neon-cyan); 
-            padding: 55px 40px 35px 40px; 
+            border: 1px solid rgba(0, 255, 204, 0.3); 
+            padding: 60px 40px 40px 40px; 
             border-radius: 40px; 
             text-align: center; 
-            box-shadow: 0 0 60px rgba(0, 255, 204, 0.2); 
+            box-shadow: 0 0 80px rgba(0, 0, 0, 0.5); 
             max-width: 420px; 
             width: 100%; 
             position: relative; 
-            backdrop-filter: blur(15px);
+            backdrop-filter: blur(20px);
+            overflow: hidden; /* กักลายน้ำไว้ข้างใน */
         }
+
+        /* --- Modern Colorful Watermark Logo --- */
+        .watermark {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-15deg);
+            font-size: 5rem;
+            font-weight: 900;
+            white-space: nowrap;
+            opacity: 0.04; /* จางๆ เป็นลายน้ำ */
+            background: var(--gradient-modern);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            z-index: -1;
+            pointer-events: none;
+            filter: blur(2px);
+        }
+
         .v-badge { 
             position: absolute; 
             top: 25px; 
@@ -45,36 +65,38 @@
             border-radius: 8px; 
             font-weight: bold; 
             letter-spacing: 1px;
-            box-shadow: 0 0 10px var(--neon-pink);
+            box-shadow: 0 0 15px var(--neon-pink);
+            z-index: 10;
         }
-        .draw-container { margin-bottom: 25px; }
-        .draw-label { font-size: 0.8rem; color: #888; letter-spacing: 2px; margin-bottom: 10px; }
+        .draw-container { margin-bottom: 30px; }
+        .draw-label { font-size: 0.85rem; color: #888; letter-spacing: 2px; margin-bottom: 12px; }
         .draw-date-highlight {
             font-size: 2.2rem;
             color: var(--neon-cyan);
             font-weight: 800;
-            text-shadow: 0 0 20px var(--neon-cyan);
-            background: rgba(0, 255, 204, 0.05);
-            padding: 10px 30px;
-            border: 1px solid rgba(0, 255, 204, 0.4);
-            border-radius: 20px;
+            text-shadow: 0 0 25px var(--neon-cyan);
+            background: rgba(0, 255, 204, 0.08);
+            padding: 10px 35px;
+            border: 1px solid rgba(0, 255, 204, 0.5);
+            border-radius: 25px;
             display: inline-block;
         }
         .main-num { 
-            font-size: 7.5rem; 
+            font-size: 7.8rem; 
             font-weight: 900; 
             background: linear-gradient(to bottom, #fff, var(--neon-cyan)); 
             -webkit-background-clip: text; 
             -webkit-text-fill-color: transparent; 
-            margin: 10px 0; 
+            margin: 5px 0; 
             letter-spacing: 8px;
+            line-height: 1;
         }
         .sub-num { 
-            font-size: 4rem; 
+            font-size: 4.2rem; 
             color: var(--neon-pink); 
             font-weight: bold; 
-            margin-bottom: 25px;
-            text-shadow: 0 0 25px var(--neon-pink);
+            margin-bottom: 30px;
+            text-shadow: 0 0 30px var(--neon-pink);
             letter-spacing: 5px;
         }
         .grid { 
@@ -85,38 +107,34 @@
             border-top: 1px solid rgba(255,255,255,0.1); 
             padding-top: 25px; 
         }
-        .label { font-size: 0.7rem; color: #666; text-transform: uppercase; letter-spacing: 1.5px; }
+        .label { font-size: 0.7rem; color: #666; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 5px;}
         .val { font-size: 1.3rem; font-weight: bold; color: var(--neon-cyan); }
         
-        /* Copyright & Credits Section */
         .credits-container {
-            margin-top: 40px;
+            margin-top: 45px;
             border-top: 1px solid rgba(255,255,255,0.05);
             padding-top: 20px;
         }
         .copyright-text {
             font-size: 0.85rem;
             color: rgba(255,255,255,0.6);
-            margin-bottom: 5px;
+            margin-bottom: 6px;
             font-weight: 600;
-            letter-spacing: 0.5px;
         }
         .collaboration-text {
             font-size: 0.65rem;
             color: rgba(255,255,255,0.3);
             font-style: italic;
             letter-spacing: 1px;
-            text-transform: uppercase;
         }
-        .partner-highlight {
-            color: var(--neon-cyan);
-            opacity: 0.8;
-        }
+        .partner-highlight { color: var(--neon-cyan); opacity: 0.9; }
     </style>
 </head>
 <body>
 
 <div class="oracle-box">
+    <div class="watermark">K.S. INNOVATIVE</div>
+    
     <div class="v-badge">V4.0 SINGULARITY</div>
     
     <div class="draw-container">
@@ -124,17 +142,17 @@
         <div class="draw-date-highlight" id="draw-date">16 ม.ค. 69</div>
     </div>
     
-    <div class="label">3-Digit Strict Target</div>
+    <div class="label">เลข 3 ตัวท้ายรางวัลที่ 1</div>
     <div class="main-num" id="t3d">---</div>
     
-    <div class="label">2-Digit Strict Target</div>
+    <div class="label" style="margin-top: 10px;">เลขท้าย 2 ตัว</div>
     <div class="sub-num" id="t2d">--</div>
 
     <div class="grid">
         <div><div class="label">Confidence</div><div class="val" id="conf">--%</div></div>
         <div><div class="label">Hit Rate (72)</div><div class="val" id="hit">--%</div></div>
         <div><div class="label">Temp Sync</div><div class="val" id="temp">--°C</div></div>
-        <div><div class="label">System Status</div><div class="val" style="font-size: 0.8rem; color: var(--neon-pink);" id="status">SYNCING...</div></div>
+        <div><div class="label">System Status</div><div class="val" style="font-size: 0.85rem; color: var(--neon-pink);" id="status">SYNCING...</div></div>
     </div>
 
     <div class="credits-container">
@@ -142,7 +160,7 @@
             © 2026 Kittipan Siripatthajak & <span class="partner-highlight">Gemini AI Partner</span>
         </div>
         <div class="collaboration-text">
-            Joint Mathematical Exploration & Probability Research
+            K.S. INNOVATIVE MATHEMATICAL RESEARCH
         </div>
     </div>
 </div>
@@ -162,6 +180,7 @@
             document.getElementById('temp').innerText = data.environment_sync.temp_ref + "°C";
             document.getElementById('status').innerText = data.status.toUpperCase();
             
+            // ตรวจสอบวันที่
             if(data.next_draw.includes("2026-01-16")) {
                 document.getElementById('draw-date').innerText = "16 ม.ค. 69";
             } else {
@@ -177,7 +196,7 @@
     }
 
     updateDashboard();
-    setInterval(updateDashboard, 300000);
+    setInterval(updateDashboard, 300000); // อัปเดตทุก 5 นาที
 </script>
 
 </body>
