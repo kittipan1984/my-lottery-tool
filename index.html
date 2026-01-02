@@ -41,7 +41,6 @@
             z-index: 1;
         }
 
-        /* --- LOGO BG --- */
         .bg-logo {
             position: absolute;
             top: 50%;
@@ -80,7 +79,6 @@
             to { transform: rotate(360deg); }
         }
 
-        /* --- UI ELEMENTS --- */
         .v-badge { 
             position: absolute; 
             top: 30px; 
@@ -127,7 +125,6 @@
             letter-spacing: 6px;
         }
 
-        /* --- DYNAMIC GRAPH --- */
         .graph-container {
             width: 100%;
             height: 45px;
@@ -217,17 +214,31 @@
     }
     setInterval(animateGraph, 700);
 
+    // ฟังก์ชันแปลงวันที่สากลเป็นวันที่ไทย
+    function formatThaiDate(dateString) {
+        if (!dateString || !dateString.includes('-')) return dateString;
+        
+        const months = ["ม.ค.", "ก.พ.", "มี.ค.", "เม.ย.", "พ.ค.", "มิ.ย.", "ก.ค.", "ส.ค.", "ก.ย.", "ต.ค.", "พ.ย.", "ธ.ค."];
+        const parts = dateString.split('-'); // 2026-01-16
+        const day = parseInt(parts[2]);
+        const month = months[parseInt(parts[1]) - 1];
+        const year = parseInt(parts[0]) + 543;
+        const shortYear = year.toString().slice(-2);
+        
+        return `${day} ${month} ${shortYear}`;
+    }
+
     function updateTheme(confidence) {
         const root = document.documentElement;
         if (confidence >= 90) {
-            root.style.setProperty('--neon-main', '#00ffcc'); // Cyan
-            root.style.setProperty('--neon-sub', '#ff0055');  // Pink
+            root.style.setProperty('--neon-main', '#00ffcc');
+            root.style.setProperty('--neon-sub', '#ff0055');
         } else if (confidence >= 75) {
-            root.style.setProperty('--neon-main', '#ffcc00'); // Gold
-            root.style.setProperty('--neon-sub', '#ff6600');  // Orange
+            root.style.setProperty('--neon-main', '#ffcc00');
+            root.style.setProperty('--neon-sub', '#ff6600');
         } else {
-            root.style.setProperty('--neon-main', '#0077ff'); // Blue
-            root.style.setProperty('--neon-sub', '#7700ff');  // Purple
+            root.style.setProperty('--neon-main', '#0077ff');
+            root.style.setProperty('--neon-sub', '#7700ff');
         }
     }
 
@@ -243,7 +254,9 @@
             document.getElementById('hit').innerText = data.predictions.hit_rate_v4 + "%";
             document.getElementById('temp').innerText = data.environment_sync.temp_ref + "°C";
             document.getElementById('status').innerText = data.status.toUpperCase();
-            document.getElementById('draw-date').innerText = data.next_draw;
+            
+            // ใช้ฟังก์ชันแปลงฟอร์แมตวันที่ก่อนแสดงผล
+            document.getElementById('draw-date').innerText = formatThaiDate(data.next_draw);
 
             updateTheme(data.predictions.confidence_score);
         } catch (err) {
