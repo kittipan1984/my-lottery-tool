@@ -6,31 +6,95 @@
     <title>Deterministic Causal Engine V3.3</title>
     <style>
         :root {
-            --primary: #2563eb;
+            --bg: #0f172a;
+            --card: #1e293b;
+            --primary: #3b82f6;
+            --accent: #f59e0b;
             --success: #10b981;
-            --danger: #ef4444;
-            --gold: #f59e0b;
+            --text: #f8fafc;
         }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f3f4f6; margin: 0; padding: 20px; }
-        .container { max-width: 800px; margin: 0 auto; }
-        .card { background: white; padding: 20px; border-radius: 15px; shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); margin-bottom: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        .header { text-align: center; margin-bottom: 30px; }
-        .header h1 { color: #1f2937; margin: 0; }
-        .input-group { display: flex; gap: 10px; margin-bottom: 15px; }
-        input { flex: 1; padding: 12px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 14px; }
-        button { padding: 12px 25px; background: var(--primary); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; }
-        button:hover { background: #1d4ed8; }
+        body { 
+            font-family: 'Inter', system-ui, sans-serif; 
+            background-color: var(--bg); 
+            color: var(--text);
+            margin: 0; 
+            padding: 20px;
+        }
+        .container { max-width: 900px; margin: 0 auto; }
+        .card { 
+            background: var(--card); 
+            padding: 24px; 
+            border-radius: 16px; 
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.3);
+            margin-bottom: 24px;
+        }
+        .header { text-align: center; margin-bottom: 40px; }
+        .header h1 { font-size: 2.5rem; margin-bottom: 8px; color: var(--primary); }
         
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; }
-        .pure-box { background: #ecfdf5; border-left: 5px solid var(--success); padding: 15px; border-radius: 8px; text-align: center; }
-        .pure-val { font-size: 24px; font-weight: 800; color: #065f46; display: block; }
+        .input-group { display: flex; gap: 12px; margin: 20px 0; }
+        input { 
+            flex: 1; 
+            padding: 14px; 
+            background: #334155; 
+            border: 1px solid #475569; 
+            border-radius: 12px; 
+            color: white;
+            font-size: 14px;
+        }
+        button { 
+            padding: 14px 28px; 
+            background: var(--primary); 
+            color: white; 
+            border: none; 
+            border-radius: 12px; 
+            cursor: pointer; 
+            font-weight: bold;
+            transition: transform 0.2s;
+        }
+        button:hover { transform: scale(1.02); background: #2563eb; }
+
+        /* การแสดงผลเลขเด่น (Classic Style) */
+        .digit-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-top: 20px; }
+        .digit-card { 
+            background: #334155; 
+            padding: 20px; 
+            border-radius: 12px; 
+            text-align: center;
+            border-bottom: 4px solid var(--primary);
+        }
+        .digit-val { font-size: 2.5rem; font-weight: 900; display: block; }
         
-        .social-item { display: flex; justify-content: space-between; align-items: center; padding: 15px; background: #f9fafb; border-radius: 10px; margin-bottom: 10px; border: 1px solid #e5e7eb; }
-        .confidence-high { background: linear-gradient(135deg, #fbbf24, #f59e0b); color: white; border: none; }
-        .veto-banner { background: #fee2e2; color: #991b1b; padding: 15px; border-radius: 10px; border-left: 5px solid var(--danger); margin-top: 20px; font-weight: bold; }
+        /* สังเคราะห์ 2-3 ตัว */
+        .result-section { margin-top: 30px; }
+        .section-title { font-size: 1.2rem; font-weight: bold; margin-bottom: 15px; display: flex; align-items: center; gap: 8px; }
         
-        .label { font-size: 12px; font-weight: bold; color: #6b7280; text-transform: uppercase; margin-bottom: 5px; display: block; }
-        .status-success { color: var(--success); font-weight: bold; text-align: center; }
+        .synthesis-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 12px; }
+        .synthesis-item { 
+            background: #334155; 
+            padding: 15px; 
+            border-radius: 12px; 
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        .synthesis-item.gold { 
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: white;
+        }
+
+        /* ตาราง Social Ranking */
+        .social-table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        .social-table td { padding: 16px; background: #334155; border-bottom: 1px solid #1e293b; }
+        .social-table tr:last-child td { border: none; }
+        .confidence-badge { 
+            padding: 4px 12px; 
+            border-radius: 20px; 
+            font-size: 0.8rem; 
+            font-weight: bold;
+            background: var(--primary);
+        }
+
+        .veto-box { background: #450a0a; color: #fca5a5; padding: 15px; border-radius: 12px; margin-top: 20px; font-size: 0.9rem; border: 1px solid #7f1d1d; }
         .hidden { display: none; }
     </style>
 </head>
@@ -38,32 +102,37 @@
 
 <div class="container">
     <div class="header">
-        <h1>Causal Engine V3.3 🔮</h1>
-        <p>Predictive Logic & Blind Test Mode</p>
+        <h1>Causal Engine V3.3</h1>
+        <p style="color: #94a3b8;">Deterministic System & AI Predictive Model</p>
     </div>
 
     <div class="card">
-        <div class="label">เชื่อมต่อฐานข้อมูล Gist</div>
         <div class="input-group">
-            <input type="text" id="gistUrl" placeholder="วาง Raw Gist URL ที่นี่...">
-            <button onclick="syncData()">SYNC DATA</button>
+            <input type="text" id="gistUrl" placeholder="ป้อน Raw Gist URL ของคุณที่นี่...">
+            <button onclick="syncData()">ซิงค์ข้อมูล</button>
         </div>
-        <div id="statusPanel"></div>
+        <div id="statusPanel" style="text-align: center; font-size: 0.9rem;"></div>
     </div>
 
     <div id="predictionDisplay" class="hidden">
+        
         <div class="card">
-            <div class="label" style="color: var(--success);">🛡️ Pure Logic Synthesis (Base Set)</div>
-            <p style="font-size: 12px; color: #666; margin-bottom: 15px;">*สังเคราะห์จากปัจจัยธรรมชาติ 100%</p>
-            <div class="grid" id="pureLogicResult"></div>
+            <div class="section-title">🎯 อันดับเลขเด่น (Top 4 Digits)</div>
+            <div class="digit-grid" id="topDigitsResult"></div>
+        </div>
+
+        <div class="card" style="border-top: 4px solid var(--success);">
+            <div class="section-title" style="color: var(--success);">🛡️ สังเคราะห์ Pure Logic (ไม่ต้องใช้ Social)</div>
+            <p style="font-size: 0.8rem; color: #94a3b8; margin-bottom: 15px;">*สร้างจากความสัมพันธ์ของอุณหภูมิและดวงจันทร์</p>
+            <div class="synthesis-grid" id="pureGenResult"></div>
         </div>
 
         <div class="card">
-            <div class="label" style="color: var(--primary);">🔮 Social Convergence Analysis</div>
-            <div id="socialResult"></div>
+            <div class="section-title">🔮 วิเคราะห์จากข้อมูล Social</div>
+            <table class="social-table" id="socialResult"></table>
+            <div id="vetoPanel" class="hidden veto-box"></div>
         </div>
 
-        <div id="vetoPanel" class="hidden veto-banner"></div>
     </div>
 </div>
 
@@ -76,7 +145,7 @@
         try {
             const response = await fetch(url);
             engineData = await response.json();
-            document.getElementById('statusPanel').innerHTML = `<p class="status-success">✓ เชื่อมต่อข้อมูลสำเร็จ: งวด ${engineData.draws[0].date}</p>`;
+            document.getElementById('statusPanel').innerHTML = `<span style="color:var(--success)">✓ เชื่อมต่อสำเร็จ: งวด ${engineData.draws[0].date}</span>`;
             runAnalysis();
         } catch (e) {
             alert('โหลดข้อมูลล้มเหลว ตรวจสอบ Raw URL');
@@ -90,7 +159,7 @@
         const lunar = current.lunarPhase;
         const socialInputs = current.suggestedSocial.split(',').map(s => s.trim());
 
-        // 1. Calculate Top Digits
+        // 1. Logic การคำนวณ Ranking
         let digits = [0,1,2,3,4,5,6,7,8,9].map(d => {
             let score = 0;
             if(isTempEven && d % 2 === 0) score += 5;
@@ -100,47 +169,51 @@
             return { digit: d, score: score };
         }).sort((a,b) => b.score - a.score);
 
-        const top4 = digits.slice(0, 4).map(d => d.digit);
+        const top4 = digits.slice(0, 4);
+        const top4Vals = top4.map(d => d.digit);
 
-        // 2. Render Pure Logic
-        const pureContainer = document.getElementById('pureLogicResult');
-        let pairs = [`${top4[0]}${top4[1]}`, `${top4[0]}${top4[2]}`, `${top4[1]}${top4[3]}`];
-        pureContainer.innerHTML = pairs.map(p => `
-            <div class="pure-box">
-                <span class="label">Pure 2D</span>
-                <span class="pure-val">${p}</span>
+        // แสดงผลเลขเด่น
+        document.getElementById('topDigitsResult').innerHTML = top4.map((d, i) => `
+            <div class="digit-card" style="${i === 0 ? 'border-color:var(--accent)' : ''}">
+                <span style="font-size:0.7rem; color:#94a3b8; font-weight:bold;">อันดับ ${i+1}</span>
+                <span class="digit-val" style="${i === 0 ? 'color:var(--accent)' : ''}">${d.digit}</span>
             </div>
-        `).join('') + `
-            <div class="pure-box" style="background:#dcfce7">
-                <span class="label">Key Digit</span>
-                <span class="pure-val" style="color:#166534">${top4[0]}</span>
-            </div>
-        `;
+        `).join('');
 
-        // 3. Render Social
-        const socialContainer = document.getElementById('socialResult');
+        // 2. สังเคราะห์เลขชุด (Pure Logic)
+        const pureGen = [
+            `${top4Vals[0]}${top4Vals[1]}`,
+            `${top4Vals[0]}${top4Vals[2]}`,
+            `${top4Vals[0]}${top4Vals[1]}${top4Vals[2]}`,
+            `${top4Vals[1]}${top4Vals[3]}`
+        ];
+        document.getElementById('pureGenResult').innerHTML = pureGen.map((p, i) => `
+            <div class="synthesis-item ${i === 2 ? 'gold' : ''}">${p}</div>
+        `).join('');
+
+        // 3. วิเคราะห์ Social
         let vetoTriggers = [];
-        socialContainer.innerHTML = socialInputs.map(s => {
+        document.getElementById('socialResult').innerHTML = socialInputs.map(s => {
             let confidence = 50;
             let matchCount = 0;
-            top4.forEach(d => { if(s.includes(d.toString())) matchCount++; });
-            confidence += (matchCount * 15);
+            top4Vals.forEach(d => { if(s.includes(d.toString())) matchCount++; });
+            confidence += (matchCount * 12);
             
             let isSocialEven = parseInt(s) % 2 === 0;
             if(s.length === 2 && isSocialEven !== isTempEven) {
-                confidence -= 30;
-                vetoTriggers.push(`⚠️ เลข ${s} ไม่สอดคล้องกับอุณหภูมิ (${isTempEven ? 'คู่' : 'คี่'})`);
+                confidence -= 25;
+                vetoTriggers.push(`⚠️ เลข "${s}" ขัดแย้งกับหลักการอุณหภูมิ (${isTempEven ? 'เลขคู่' : 'เลขคี่'})`);
             }
 
-            const classGold = confidence >= 80 ? 'confidence-high' : '';
             return `
-                <div class="social-item ${classGold}">
-                    <div><span style="font-size:24px; font-weight:bold;">${s}</span></div>
-                    <div style="text-align:right">
-                        <div style="font-size:10px; font-weight:bold; opacity:0.8;">CONFIDENCE</div>
-                        <div style="font-size:20px; font-weight:900;">${Math.min(confidence, 99)}%</div>
-                    </div>
-                </div>
+                <tr>
+                    <td style="font-size:1.8rem; font-weight:bold;">${s}</td>
+                    <td style="text-align:right">
+                        <span class="confidence-badge" style="background:${confidence > 75 ? 'var(--accent)' : 'var(--primary)'}">
+                            Confidence: ${Math.min(confidence, 99)}%
+                        </span>
+                    </td>
+                </tr>
             `;
         }).join('');
 
