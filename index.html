@@ -3,77 +3,76 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CAUSAL LOGIC ENGINE v2.7</title>
+    <title>CAUSAL LOGIC ENGINE v3.0</title>
     <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
-        :root { --primary: #3b82f6; --bg: #f8fafc; --card: #ffffff; --border: #e2e8f0; --text: #1e293b; }
+        :root { --primary: #2563eb; --success: #10b981; --bg: #f1f5f9; --card: #ffffff; }
         body { font-family: 'Prompt', sans-serif; background: var(--bg); margin: 0; padding: 20px; display: flex; justify-content: center; }
-        .container { width: 100%; max-width: 480px; background: var(--card); border-radius: 24px; padding: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); border: 1px solid var(--border); }
+        .container { width: 100%; max-width: 500px; background: var(--card); border-radius: 28px; padding: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
         
-        .header { text-align: center; margin-bottom: 25px; }
-        .header h1 { font-size: 1.4rem; color: var(--primary); margin: 0 0 5px 0; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
-        .sync-status { font-size: 0.75rem; color: #64748b; font-weight: 600; text-transform: uppercase; }
+        .header { text-align: center; margin-bottom: 25px; border-bottom: 2px solid #f8fafc; padding-bottom: 15px; }
+        .header h1 { font-size: 1.5rem; color: var(--primary); margin: 0; letter-spacing: 1px; }
+        .status { font-size: 0.75rem; color: var(--success); font-weight: 600; margin-top: 5px; }
 
-        .date-section { margin-bottom: 25px; border-bottom: 1px solid #f1f5f9; padding-bottom: 20px; text-align: center; }
-        .date-section label { display: block; font-size: 0.85rem; font-weight: 600; color: #64748b; margin-bottom: 10px; }
-        .btn-sync { width: 100%; padding: 14px; border-radius: 14px; font-weight: 600; cursor: pointer; background: #fff; color: var(--primary); border: 2px solid var(--primary); font-family: 'Prompt'; transition: 0.3s; }
-
-        .input-group { margin-bottom: 18px; }
-        .input-group label { font-size: 0.75rem; color: #64748b; display: block; margin-bottom: 6px; font-weight: 600; text-transform: uppercase; }
-        input { width: 100%; border: 1.5px solid var(--border); border-radius: 12px; padding: 14px; font-size: 1rem; box-sizing: border-box; outline: none; background: #fff; color: var(--text); font-family: 'Prompt'; }
-
-        .btn-main { width: 100%; padding: 18px; border-radius: 16px; font-weight: 600; cursor: pointer; border: none; font-size: 1rem; background: var(--primary); color: white; box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3); font-family: 'Prompt'; margin: 15px 0; text-transform: uppercase; }
-
-        .result-panel { margin-top: 25px; display: none; }
-        .res-label { font-size: 0.85rem; font-weight: 600; color: var(--primary); margin-bottom: 8px; }
-        .box-display { background: #f8fafc; border: 1px solid #edf2f7; border-radius: 12px; padding: 15px; font-size: 1.1rem; color: var(--text); margin-bottom: 22px; min-height: 24px; }
+        .date-section { background: #f8fafc; padding: 20px; border-radius: 20px; margin-bottom: 20px; border: 1px solid #e2e8f0; }
+        .date-section label { display: block; font-size: 0.85rem; color: #64748b; margin-bottom: 8px; font-weight: 600; }
+        input[type="date"], input[type="text"], input[type="number"] { width: 100%; border: 1.5px solid #e2e8f0; border-radius: 12px; padding: 12px; font-size: 1rem; box-sizing: border-box; font-family: 'Prompt'; margin-bottom: 10px; }
         
-        .rating-card { background: #fff; border: 1.5px solid #f1f5f9; border-radius: 20px; padding: 20px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
-        .num-val { font-size: 2.2rem; font-weight: 600; color: #1e293b; }
-        .score-info { text-align: right; }
-        .score-label { font-size: 0.65rem; color: #94a3b8; display: block; text-transform: uppercase; }
-        .score-num { font-size: 1.4rem; font-weight: 600; color: #10b981; }
+        .btn-sync { width: 100%; background: #fff; border: 2px solid var(--primary); color: var(--primary); padding: 12px; border-radius: 12px; font-weight: 600; cursor: pointer; transition: 0.3s; }
+        .btn-main { width: 100%; background: var(--primary); color: white; border: none; padding: 20px; border-radius: 18px; font-weight: 600; font-size: 1.1rem; cursor: pointer; margin-top: 15px; box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3); }
+
+        .result-panel { margin-top: 30px; display: none; }
+        .section-title { font-size: 0.9rem; font-weight: 600; color: #475569; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+        .section-title::before { content: ''; width: 4px; height: 16px; background: var(--primary); border-radius: 10px; }
+
+        .highlight-box { background: #f0f9ff; border: 1px dashed #bae6fd; border-radius: 15px; padding: 20px; margin-bottom: 25px; }
+        .top-match { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; padding: 10px; background: white; border-radius: 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.02); }
+        .num-circle { background: var(--primary); color: white; width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; font-weight: 600; }
+        .conf-score { font-size: 0.85rem; font-weight: 600; color: var(--success); }
+
+        .rating-card { background: white; border: 1.5px solid #f1f5f9; border-radius: 20px; padding: 18px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .rating-num { font-size: 1.8rem; font-weight: 600; color: #1e293b; }
+        .rating-pts { text-align: right; }
+        .pts-val { font-size: 1.2rem; font-weight: 600; color: var(--success); display: block; }
     </style>
 </head>
 <body>
 
 <div class="container">
     <div class="header">
-        <h1>CAUSAL LOGIC ENGINE</h1>
-        <div id="syncStatus" class="sync-status">READY TO ANALYZE</div>
+        <h1>CAUSAL ENGINE v3.0</h1>
+        <div id="syncStatus" class="status">READY TO ANALYZE</div>
     </div>
 
     <div class="date-section">
-        <label>วิเคราะห์ข้อมูลประจำวันที่</label>
-        <input type="date" id="drawDate" value="2026-01-17">
-        <button class="btn-sync" onclick="syncData()">DATABASE SYNC</button>
+        <label>TARGET DATE (BACKTEST/LIVE)</label>
+        <input type="date" id="drawDate" value="2026-01-16">
+        <button class="btn-sync" onclick="syncData()">🔄 SYNC GIST SOCIAL DATA</button>
     </div>
 
-    <div class="input-group">
-        <label>SOCIAL ENERGY (INPUT NUMBERS)</label>
-        <input type="text" id="socialInput" placeholder="ตัวอย่าง: 895, 52, 1, 6">
+    <div style="padding: 0 10px;">
+        <label style="font-size: 0.75rem; font-weight: 600; color: #64748b;">LIVE SOCIAL INPUT</label>
+        <input type="text" id="socialInput" placeholder="895, 52, 16...">
+        
+        <div style="display: flex; gap: 10px;">
+            <div style="flex: 1;">
+                <label style="font-size: 0.75rem; font-weight: 600; color: #64748b;">TEMP (°C)</label>
+                <input type="number" id="temp" placeholder="26">
+            </div>
+            <div style="flex: 1;">
+                <label style="font-size: 0.75rem; font-weight: 600; color: #64748b;">MOON PHASE</label>
+                <input type="text" id="moon" placeholder="Full Moon">
+            </div>
+        </div>
     </div>
 
-    <div class="input-group">
-        <label>TEMPERATURE (°C)</label>
-        <input type="text" id="temp" placeholder="22">
-    </div>
-
-    <div class="input-group">
-        <label>GRAVITY FACTOR (MOON)</label>
-        <input type="text" id="moon" placeholder="New Moon">
-    </div>
-
-    <button class="btn-main" onclick="runEngine()">🚀 RUN ENGINE ANALYSIS</button>
+    <button class="btn-main" onclick="runAnalysis()">🚀 RUN COMPREHENSIVE ANALYSIS</button>
 
     <div id="resultArea" class="result-panel">
-        <div class="res-label">เลข 3 ตัวรางวัลที่ 1</div>
-        <div id="res3" class="box-display">--</div>
+        <div class="section-title">INTELLIGENT CONVERGENCE (TOP MATCH)</div>
+        <div id="resSynth" class="highlight-box">--</div>
 
-        <div class="res-label">เลข 2 ตัวท้าย</div>
-        <div id="res2" class="box-display">--</div>
-
-        <div class="res-label" style="margin-bottom: 15px; text-transform: uppercase; font-size: 0.75rem;">Result by Rating Points</div>
+        <div class="section-title">SINGLE DIGIT RATING (0-9)</div>
         <div id="resRating"></div>
     </div>
 </div>
@@ -83,62 +82,77 @@
 
     async function syncData() {
         const date = document.getElementById('drawDate').value;
-        const statusDiv = document.getElementById('syncStatus');
-        statusDiv.innerText = "SYNCING...";
-        
+        const status = document.getElementById('syncStatus');
+        status.innerText = "SYNCING...";
         try {
             const res = await fetch(GIST_URL + "?t=" + new Date().getTime());
             const data = await res.json();
             const match = data.draws.find(d => d.date === date);
-            
             if (match) {
                 document.getElementById('socialInput').value = match.suggestedSocial;
                 document.getElementById('temp').value = match.recommendedTemp;
                 document.getElementById('moon').value = match.lunarPhase;
-                statusDiv.innerText = "DATABASE SYNCED SUCCESSFUL";
-                statusDiv.style.color = "#10b981";
-            } else { statusDiv.innerText = "DATA NOT FOUND"; }
-        } catch (e) { statusDiv.innerText = "SYNC ERROR"; }
+                status.innerText = "DATABASE SYNCED SUCCESSFUL";
+            }
+        } catch (e) { alert("Sync Error"); }
     }
 
-    function runEngine() {
-        const inputStr = document.getElementById('socialInput').value;
-        const tempVal = parseInt(document.getElementById('temp').value) || 0;
+    function runAnalysis() {
+        const socialRaw = document.getElementById('socialInput').value;
+        const temp = parseInt(document.getElementById('temp').value) || 25;
+        const moon = document.getElementById('moon').value || "";
         
-        if(!inputStr) return;
+        const socialArray = socialRaw.split(/[\s,]+/).map(n => n.trim());
 
-        // แยกเลขโดยใช้ comma หรือ space
-        const rawArray = inputStr.split(/[\s,]+/).map(n => n.trim()).filter(n => n.length > 0);
-        
-        // แยกตามหลักเลข (Strict Filter)
-        const list3 = rawArray.filter(n => n.length === 3);
-        const list2 = rawArray.filter(n => n.length === 2);
-        
-        // แสดงผลเลขชุด
-        document.getElementById('res3').innerText = list3.length > 0 ? list3.join(', ') : "--";
-        document.getElementById('res2').innerText = list2.length > 0 ? list2.join(', ') : "--";
+        // 1. วิเคราะห์ 00-99 (Pure Logic) ตัดกับ Social (Convergence)
+        let convergence = [];
+        for(let i=0; i<=99; i++) {
+            let numStr = i.toString().padStart(2, '0');
+            let baseScore = 70; // ฐานคะแนนเต็ม 100
+            
+            // Logic Points
+            if (i % 2 === temp % 2) baseScore += 15;
+            if (moon.includes("Full") && i > 50) baseScore += 5;
+            if (moon.includes("New") && i <= 50) baseScore += 5;
+            
+            // Social Bonus (ความสอดคล้องกับมวลชน)
+            let isSocialMatch = socialArray.some(s => s.includes(numStr));
+            if (isSocialMatch) baseScore += 10;
 
-        // สกัดเลขเด่นตัวเดียว (0-9)
-        let allChars = inputStr.replace(/[^0-9]/g, '').split('');
-        let uniqueDigits = [...new Set(allChars)].sort();
+            if(baseScore >= 85 || isSocialMatch) {
+                convergence.push({ val: numStr, conf: baseScore });
+            }
+        }
 
+        const synthArea = document.getElementById('resSynth');
+        synthArea.innerHTML = "";
+        convergence.sort((a,b) => b.conf - a.conf).slice(0, 5).forEach(item => {
+            synthArea.innerHTML += `
+                <div class="top-match">
+                    <div class="num-circle">${item.val}</div>
+                    <div class="conf-score">Confidence ${item.conf}%</div>
+                </div>
+            `;
+        });
+
+        // 2. Single Digit Rating (0-9)
         const ratingArea = document.getElementById('resRating');
         ratingArea.innerHTML = "";
+        let digitScores = [];
+        for(let d=0; d<=9; d++) {
+            let pts = 8.0;
+            if (d % 2 === temp % 2) pts += 1.2;
+            if (socialRaw.includes(d.toString())) pts += 0.5;
+            digitScores.push({ val: d, pts: pts.toFixed(1) });
+        }
 
-        // คำนวณ Rating เฉพาะเลขเด่นตัวเดียว
-        let scored = uniqueDigits.map(digit => {
-            let base = 8.5 + (Math.random() * 1.0);
-            if(parseInt(digit) % 2 === tempVal % 2) base += 0.3;
-            return { val: digit, pt: base.toFixed(1) };
-        }).sort((a,b) => b.pt - a.pt);
-
-        scored.forEach(item => {
+        digitScores.sort((a,b) => b.pts - a.pts).forEach(item => {
             ratingArea.innerHTML += `
                 <div class="rating-card">
-                    <div class="num-val">${item.val}</div>
-                    <div class="score-info">
-                        <span class="score-label">Rating</span>
-                        <span class="score-num">${item.pt} Pts</span>
+                    <div class="rating-num">${item.val}</div>
+                    <div class="rating-pts">
+                        <span style="font-size:0.6rem; color:#94a3b8; display:block;">RATING</span>
+                        <span class="pts-val">${item.pts} Pts</span>
                     </div>
                 </div>
             `;
