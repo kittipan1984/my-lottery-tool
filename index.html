@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>V4.0 Singularity Pulse | K.S. Innovative</title>
+    <title>V4.0 Singularity Pulse | K.S. Innovative & AI Quantum Number</title>
     <style>
         :root { 
             --neon-cyan: #00ffcc; 
@@ -12,6 +12,7 @@
             --glass: rgba(255, 255, 255, 0.03);
             --gradient-main: linear-gradient(135deg, #00ffcc, #ff0055);
         }
+        
         body { 
             background: var(--bg-dark); 
             color: #fff; 
@@ -21,8 +22,9 @@
             align-items: center; 
             min-height: 100vh; 
             margin: 0;
-            padding: 20px;
-            overflow: hidden;
+            padding: 40px 20px;
+            box-sizing: border-box;
+            overflow-y: auto;
         }
 
         .oracle-box { 
@@ -36,7 +38,6 @@
             width: 100%; 
             position: relative; 
             backdrop-filter: blur(25px);
-            overflow: hidden;
         }
 
         /* --- K.S. INNOVATIVE GRAPHIC LOGO BACKGROUND --- */
@@ -48,13 +49,13 @@
             width: 300px;
             height: 300px;
             z-index: -1;
-            opacity: 0.12; /* ปรับความชัดของโลโก้พื้นหลังตรงนี้ */
+            opacity: 0.12;
             display: flex;
             justify-content: center;
             align-items: center;
+            pointer-events: none;
         }
 
-        /* รูปวงแหวนรอบนอก */
         .logo-ring {
             position: absolute;
             width: 100%;
@@ -67,7 +68,6 @@
             animation: rotate 10s linear infinite;
         }
 
-        /* ตัวอักษร S กึ่งกลาง */
         .logo-s {
             font-size: 180px;
             font-weight: 900;
@@ -82,7 +82,6 @@
             to { transform: rotate(360deg); }
         }
 
-        /* --- UI ELEMENTS --- */
         .v-badge { 
             position: absolute; 
             top: 30px; 
@@ -94,9 +93,10 @@
             font-weight: bold; 
             letter-spacing: 1px;
             box-shadow: 0 0 20px rgba(255, 0, 85, 0.4);
+            z-index: 2;
         }
 
-        .draw-container { margin-bottom: 35px; }
+        .draw-container { margin-bottom: 35px; position: relative; z-index: 2; }
         .draw-label { font-size: 0.9rem; color: #888; letter-spacing: 2px; margin-bottom: 12px; }
         .draw-date-highlight {
             font-size: 2.3rem;
@@ -110,10 +110,10 @@
             display: inline-block;
         }
 
-        .label-th { font-size: 0.8rem; color: #aaa; letter-spacing: 1px; margin-bottom: 5px; }
+        .label-th { font-size: 0.8rem; color: #aaa; letter-spacing: 1px; margin-bottom: 5px; position: relative; z-index: 2; }
         
         .main-num { 
-            font-size: 8rem; 
+            font-size: 7.8rem; 
             font-weight: 900; 
             background: linear-gradient(to bottom, #fff, #fff, var(--neon-cyan)); 
             -webkit-background-clip: text; 
@@ -121,6 +121,8 @@
             margin: 0; 
             letter-spacing: 10px;
             line-height: 1.1;
+            position: relative;
+            z-index: 2;
         }
 
         .sub-num { 
@@ -130,6 +132,8 @@
             margin-bottom: 30px;
             text-shadow: 0 0 30px var(--neon-pink);
             letter-spacing: 6px;
+            position: relative;
+            z-index: 2;
         }
 
         .grid { 
@@ -139,6 +143,8 @@
             margin-top: 25px; 
             border-top: 1px solid rgba(255,255,255,0.1); 
             padding-top: 25px; 
+            position: relative;
+            z-index: 2;
         }
         .label { font-size: 0.65rem; color: #666; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 5px; }
         .val { font-size: 1.3rem; font-weight: bold; color: var(--neon-cyan); }
@@ -147,6 +153,8 @@
             margin-top: 40px;
             border-top: 1px solid rgba(255,255,255,0.05);
             padding-top: 20px;
+            position: relative;
+            z-index: 2;
         }
         .copyright-text {
             font-size: 0.85rem;
@@ -192,7 +200,7 @@
 
     <div class="credits-container">
         <div class="copyright-text">
-            © 2026 Kittipan Siripatthajak & <span style="color:var(--neon-cyan)">Gemini AI</span>
+            © 2026 Kittipan Siripatthajak & <span style="color:var(--neon-cyan)">AI Quantum Number</span>
         </div>
         <div class="collaboration-text">
             K.S. Innovative Research Group
