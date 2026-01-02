@@ -3,47 +3,59 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CAUSAL LOGIC ENGINE v3.1</title>
+    <title>CAUSAL LOGIC ENGINE v3.2</title>
     <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
-        :root { --primary: #2563eb; --success: #10b981; --warning: #f59e0b; --bg: #f1f5f9; --card: #ffffff; }
+        :root { --primary: #2563eb; --success: #10b981; --warning: #f59e0b; --bg: #f1f5f9; --card: #ffffff; --border: #e2e8f0; }
         body { font-family: 'Prompt', sans-serif; background: var(--bg); margin: 0; padding: 20px; display: flex; justify-content: center; }
-        .container { width: 100%; max-width: 500px; background: var(--card); border-radius: 28px; padding: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        .container { width: 100%; max-width: 500px; background: var(--card); border-radius: 28px; padding: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); border: 1px solid var(--border); }
+        
         .header { text-align: center; margin-bottom: 25px; }
-        .header h1 { font-size: 1.5rem; color: var(--primary); margin: 0; text-transform: uppercase; letter-spacing: 1px; }
+        .header h1 { font-size: 1.4rem; color: var(--primary); margin: 0; text-transform: uppercase; letter-spacing: 1px; }
         .status { font-size: 0.75rem; color: var(--success); font-weight: 600; margin-top: 5px; }
-        .date-section { background: #f8fafc; padding: 15px; border-radius: 20px; margin-bottom: 20px; border: 1px solid #e2e8f0; text-align: center; }
+
+        .section-card { background: #f8fafc; padding: 15px; border-radius: 20px; margin-bottom: 20px; border: 1px solid var(--border); }
         label { display: block; font-size: 0.75rem; color: #64748b; margin-bottom: 5px; font-weight: 600; text-transform: uppercase; }
-        input { width: 100%; border: 1.5px solid #e2e8f0; border-radius: 12px; padding: 12px; font-size: 1rem; box-sizing: border-box; font-family: 'Prompt'; margin-bottom: 10px; }
-        .btn-main { width: 100%; background: var(--primary); color: white; border: none; padding: 20px; border-radius: 18px; font-weight: 600; font-size: 1.1rem; cursor: pointer; margin-top: 15px; box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3); text-transform: uppercase; }
+        input { width: 100%; border: 1.5px solid var(--border); border-radius: 12px; padding: 12px; font-size: 1rem; box-sizing: border-box; font-family: 'Prompt'; margin-bottom: 10px; outline: none; }
+        input:focus { border-color: var(--primary); }
+
+        .btn-sync { width: 100%; padding: 10px; background: #fff; border: 1.5px solid var(--primary); color: var(--primary); border-radius: 12px; cursor: pointer; font-weight: 600; margin-bottom: 10px; }
+        .btn-main { width: 100%; background: var(--primary); color: white; border: none; padding: 18px; border-radius: 18px; font-weight: 600; font-size: 1.1rem; cursor: pointer; box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3); }
+
         .result-panel { margin-top: 30px; display: none; }
-        .section-title { font-size: 0.85rem; font-weight: 600; color: #475569; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; text-transform: uppercase; }
-        .section-title::before { content: ''; width: 4px; height: 16px; background: var(--primary); border-radius: 10px; }
-        .highlight-box { background: #f0f9ff; border: 1px dashed #bae6fd; border-radius: 15px; padding: 15px; margin-bottom: 20px; }
-        .match-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; padding: 10px; background: white; border-radius: 12px; }
-        .num-badge { background: var(--primary); color: white; padding: 5px 15px; border-radius: 20px; font-weight: 600; font-size: 1.1rem; }
-        .num-badge.gold { background: var(--warning); }
-        .conf-text { font-size: 0.8rem; font-weight: 600; color: var(--success); }
-        .rating-card { background: white; border: 1.5px solid #f1f5f9; border-radius: 20px; padding: 15px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+        .res-title { font-size: 0.85rem; font-weight: 600; color: #475569; margin-bottom: 12px; border-left: 4px solid var(--primary); padding-left: 10px; text-transform: uppercase; }
+
+        .display-box { background: #fff; border: 1.5px solid var(--border); border-radius: 20px; padding: 15px; margin-bottom: 20px; }
+        .match-item { display: flex; justify-content: space-between; align-items: center; padding: 12px; border-bottom: 1px solid #f1f5f9; }
+        .match-item:last-child { border-bottom: none; }
+        
+        .num-tag { background: var(--primary); color: white; padding: 6px 16px; border-radius: 12px; font-weight: 600; font-size: 1.1rem; }
+        .num-tag.gold { background: linear-gradient(135deg, #f59e0b, #d97706); }
+        .conf-val { font-size: 0.85rem; font-weight: 600; color: var(--success); }
+
+        .rating-row { display: flex; justify-content: space-between; align-items: center; padding: 15px; background: #f8fafc; border-radius: 15px; margin-bottom: 8px; }
+        .rating-digit { font-size: 1.8rem; font-weight: 600; color: #1e293b; }
+        .rating-pts { text-align: right; font-weight: 600; color: var(--success); font-size: 1.2rem; }
     </style>
 </head>
 <body>
 
 <div class="container">
     <div class="header">
-        <h1>CAUSAL ENGINE v3.1</h1>
+        <h1>CAUSAL ENGINE v3.2</h1>
         <div id="syncStatus" class="status">READY TO ANALYZE</div>
     </div>
 
-    <div class="date-section">
-        <label>วิเคราะห์ข้อมูลประจำวันที่</label>
+    <div class="section-card">
+        <label>TARGET DATE</label>
         <input type="date" id="drawDate" value="2026-01-17">
-        <button style="width:100%; padding:10px; background:white; border:1px solid #2563eb; color:#2563eb; border-radius:10px; cursor:pointer; font-weight:600;" onclick="syncData()">DATABASE SYNC</button>
+        <button class="btn-sync" onclick="syncData()">DATABASE SYNC</button>
     </div>
 
-    <div style="padding: 0 10px;">
+    <div style="padding: 0 5px;">
         <label>SOCIAL ENERGY</label>
-        <input type="text" id="socialInput" placeholder="895, 52...">
+        <input type="text" id="socialInput" placeholder="ตัวอย่าง: 895, 52, 16">
+        
         <div style="display:flex; gap:10px;">
             <div style="flex:1"><label>TEMP (°C)</label><input type="number" id="temp" value="22"></div>
             <div style="flex:1"><label>MOON PHASE</label><input type="text" id="moon" value="New Moon"></div>
@@ -53,13 +65,13 @@
     <button class="btn-main" onclick="runAnalysis()">🚀 RUN COMPREHENSIVE ANALYSIS</button>
 
     <div id="resultArea" class="result-panel">
-        <div class="section-title">3-Digit Reward Synthesis (AI Match)</div>
-        <div id="res3Digit" class="highlight-box" style="background: #fffbeb; border-color: #fef3c7;">--</div>
+        <div class="res-title">3-Digit Reward Synthesis (AI Match)</div>
+        <div id="res3Digit" class="display-box"></div>
 
-        <div class="section-title">Intelligent Convergence (2-Digit)</div>
-        <div id="res2Digit" class="highlight-box">--</div>
+        <div class="res-title">Intelligent Convergence (2-Digit)</div>
+        <div id="res2Digit" class="display-box"></div>
 
-        <div class="section-title">Single Digit Rating (0-9)</div>
+        <div class="res-title">Single Digit Rating (0-9)</div>
         <div id="resRating"></div>
     </div>
 </div>
@@ -68,80 +80,98 @@
     const GIST_URL = "https://gist.githubusercontent.com/kittipan1984/f7a042eef3ccbcf7000c5ff84a0a53c3/raw/lottery-config.json";
 
     async function syncData() {
-        const date = document.getElementById('drawDate').value;
+        const dateInput = document.getElementById('drawDate').value;
+        const status = document.getElementById('syncStatus');
+        status.innerText = "SYNCING...";
         try {
-            const res = await fetch(GIST_URL + "?t=" + new Date().getTime());
-            const data = await res.json();
-            const match = data.draws.find(d => d.date === date);
+            const response = await fetch(GIST_URL + "?t=" + new Date().getTime());
+            const data = await response.json();
+            const match = data.draws.find(d => d.date === dateInput);
             if (match) {
                 document.getElementById('socialInput').value = match.suggestedSocial;
                 document.getElementById('temp').value = match.recommendedTemp;
                 document.getElementById('moon').value = match.lunarPhase;
-                document.getElementById('syncStatus').innerText = "DATABASE SYNCED SUCCESSFUL";
+                status.innerText = "DATABASE SYNCED SUCCESSFUL";
+            } else {
+                status.innerText = "DATA NOT FOUND FOR THIS DATE";
             }
-        } catch (e) { alert("Sync Error"); }
+        } catch (error) {
+            status.innerText = "SYNC ERROR: CHECK CONNECTION";
+            console.error(error);
+        }
     }
 
     function runAnalysis() {
-        const social = document.getElementById('socialInput').value;
-        const temp = parseInt(document.getElementById('temp').value);
-        const moon = document.getElementById('moon').value;
+        const socialRaw = document.getElementById('socialInput').value;
+        const temp = parseInt(document.getElementById('temp').value) || 25;
+        const moon = document.getElementById('moon').value || "New Moon";
+        const resultArea = document.getElementById('resultArea');
         
-        // 1. Single Digit Logic (0-9)
-        let digits = [];
-        for(let i=0; i<=9; i++) {
-            let score = 8.0 + (i % 2 === temp % 2 ? 1.5 : 0);
-            if(moon.length % 10 === i) score += 0.2;
-            digits.push({ val: i, pts: score.toFixed(1) });
+        // --- 1. Single Digit Rating Calculation ---
+        let digitScores = [];
+        for (let i = 0; i <= 9; i++) {
+            let base = 8.0;
+            if (i % 2 === temp % 2) base += 1.2;
+            if (moon.length % 10 === i) base += 0.3;
+            if (socialRaw.includes(i.toString())) base += 0.2;
+            digitScores.push({ val: i, pts: base.toFixed(1) });
         }
-        digits.sort((a,b) => b.pts - a.pts);
-        
-        const ratingArea = document.getElementById('resRating');
-        ratingArea.innerHTML = "";
-        digits.forEach(d => {
-            ratingArea.innerHTML += `<div class="rating-card"><div style="font-size:1.8rem;font-weight:600;">${d.val}</div><div><span style="font-size:0.6rem;display:block;color:#94a3b8;">RATING</span><span style="font-size:1.2rem;font-weight:600;color:#10b981;">${d.pts} Pts</span></div></div>`;
-        });
+        digitScores.sort((a, b) => b.pts - a.pts);
 
-        // 2. 2-Digit Synthesis
-        const topDigits = digits.slice(0, 4).map(d => d.val);
-        const res2Area = document.getElementById('res2Digit');
-        res2Area.innerHTML = "";
-        let count2 = 0;
-        for(let d1 of topDigits) {
-            for(let d2 of topDigits) {
-                if(d1 === d2 || count2 >= 5) continue;
-                let conf = (d1 % 2 === temp % 2 && d2 % 2 === temp % 2) ? 95 : 85;
-                res2Area.innerHTML += `<div class="match-row"><div class="num-badge">${d1}${d2}</div><div class="conf-text">Confidence ${conf}%</div></div>`;
-                count2++;
+        const ratingHTML = digitScores.map(d => `
+            <div class="rating-row">
+                <div class="rating-digit">${d.val}</div>
+                <div class="rating-pts">${d.pts} Pts</div>
+            </div>
+        `).join('');
+        document.getElementById('resRating').innerHTML = ratingHTML;
+
+        // --- 2. Get Top Digits for Synthesis ---
+        const top4 = digitScores.slice(0, 4).map(d => d.val);
+
+        // --- 3. 2-Digit Convergence (AI-Match) ---
+        let conv2D = [];
+        for (let a of top4) {
+            for (let b of top4) {
+                if (a === b) continue;
+                let combo = `${a}${b}`;
+                let score = 85;
+                if (parseInt(combo) % 2 === temp % 2) score += 10;
+                if (socialRaw.includes(combo)) score += 4;
+                conv2D.push({ val: combo, conf: score });
             }
         }
+        const res2HTML = conv2D.sort((a, b) => b.conf - a.conf).slice(0, 4).map(item => `
+            <div class="match-item">
+                <div class="num-tag">${item.val}</div>
+                <div class="conf-val">Confidence ${item.conf}%</div>
+            </div>
+        `).join('');
+        document.getElementById('res2Digit').innerHTML = res2HTML || "No Matches Found";
 
-        // 3. 3-Digit Synthesis (NEW LOGIC)
-        // สร้างเลข 3 ตัวจากการรวมตัวเลขที่มี Rating สูงสุด 3-4 อันดับแรก
-        const res3Area = document.getElementById('res3Digit');
-        res3Area.innerHTML = "";
-        let combinations = [];
-        for(let i=0; i<topDigits.length; i++) {
-            for(let j=0; j<topDigits.length; j++) {
-                for(let k=0; k<topDigits.length; k++) {
-                    let combo = `${topDigits[i]}${topDigits[j]}${topDigits[k]}`;
-                    // หลีกเลี่ยงเลขตองเพื่อความแม่นยำทางสถิติ (ยกเว้น Logic จะแข็งมาก)
-                    if(topDigits[i] === topDigits[j] && topDigits[j] === topDigits[k]) continue;
-                    
-                    let score3 = 80;
-                    if(parseInt(combo) % 2 === temp % 2) score3 += 10;
-                    if(social.includes(combo)) score3 += 9; // ถ้าตรงกับ social ให้ความมั่นใจเกือบเต็ม
-                    
-                    combinations.push({ val: combo, conf: score3 });
+        // --- 4. 3-Digit Synthesis (AI-Match Reward 1) ---
+        let conv3D = [];
+        for (let a of top4) {
+            for (let b of top4) {
+                for (let c of top4) {
+                    let combo = `${a}${b}${c}`;
+                    if (a === b && b === c) continue; // Skip triples
+                    let score = 80;
+                    if (parseInt(combo) % 2 === temp % 2) score += 10;
+                    if (socialRaw.includes(combo)) score += 9;
+                    conv3D.push({ val: combo, conf: score });
                 }
             }
         }
-        
-        combinations.sort((a,b) => b.conf - a.conf).slice(0, 3).forEach(c => {
-            res3Area.innerHTML += `<div class="match-row"><div class="num-badge gold">${c.val}</div><div class="conf-text" style="color:#d97706;">Confidence ${c.conf}%</div></div>`;
-        });
+        const res3HTML = conv3D.sort((a, b) => b.conf - a.conf).slice(0, 3).map(item => `
+            <div class="match-item">
+                <div class="num-tag gold">${item.val}</div>
+                <div class="conf-val" style="color:#d97706;">Confidence ${item.conf}%</div>
+            </div>
+        `).join('');
+        document.getElementById('res3Digit').innerHTML = res3HTML || "No Matches Found";
 
-        document.getElementById('resultArea').style.display = "block";
+        resultArea.style.display = "block";
     }
 </script>
 </body>
