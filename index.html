@@ -3,172 +3,157 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Deterministic Causal Engine V3.3 - Predictive Phase</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Deterministic Causal Engine V3.3</title>
     <style>
-        .gold-gradient { background: linear-gradient(135deg, #ffd700, #b8860b); color: white; }
-        .logic-card { border-left: 5px solid #3b82f6; }
-        .veto-alert { border-left: 5px solid #ef4444; background-color: #fef2f2; }
-        .pure-logic-set { border-left: 5px solid #10b981; background-color: #ecfdf5; }
+        :root {
+            --primary: #2563eb;
+            --success: #10b981;
+            --danger: #ef4444;
+            --gold: #f59e0b;
+        }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f3f4f6; margin: 0; padding: 20px; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .card { background: white; padding: 20px; border-radius: 15px; shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); margin-bottom: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .header { text-align: center; margin-bottom: 30px; }
+        .header h1 { color: #1f2937; margin: 0; }
+        .input-group { display: flex; gap: 10px; margin-bottom: 15px; }
+        input { flex: 1; padding: 12px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 14px; }
+        button { padding: 12px 25px; background: var(--primary); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; }
+        button:hover { background: #1d4ed8; }
+        
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; }
+        .pure-box { background: #ecfdf5; border-left: 5px solid var(--success); padding: 15px; border-radius: 8px; text-align: center; }
+        .pure-val { font-size: 24px; font-weight: 800; color: #065f46; display: block; }
+        
+        .social-item { display: flex; justify-content: space-between; align-items: center; padding: 15px; background: #f9fafb; border-radius: 10px; margin-bottom: 10px; border: 1px solid #e5e7eb; }
+        .confidence-high { background: linear-gradient(135deg, #fbbf24, #f59e0b); color: white; border: none; }
+        .veto-banner { background: #fee2e2; color: #991b1b; padding: 15px; border-radius: 10px; border-left: 5px solid var(--danger); margin-top: 20px; font-weight: bold; }
+        
+        .label { font-size: 12px; font-weight: bold; color: #6b7280; text-transform: uppercase; margin-bottom: 5px; display: block; }
+        .status-success { color: var(--success); font-weight: bold; text-align: center; }
+        .hidden { display: none; }
     </style>
 </head>
-<body class="bg-gray-100 min-h-screen p-4">
+<body>
 
-    <div class="max-w-4xl mx-auto space-y-6">
-        <header class="bg-white p-6 rounded-2xl shadow-sm text-center">
-            <h1 class="text-2xl font-bold text-gray-800">Causal Engine V3.3</h1>
-            <p class="text-gray-500 text-sm">Predictive Mode: Pure Logic + Social Integration</p>
-        </header>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div class="bg-white p-4 rounded-xl shadow-sm">
-                <label class="block text-sm font-medium text-gray-700">Gist URL (Raw)</label>
-                <input type="text" id="gistUrl" placeholder="https://gist.githubusercontent.com/..." class="w-full mt-1 p-2 border rounded-lg text-sm">
-                <button onclick="syncData()" class="mt-3 w-full bg-blue-600 text-white py-2 rounded-lg font-semibold hover:bg-blue-700 transition">DATABASE SYNC</button>
-            </div>
-            <div id="statusPanel" class="bg-white p-4 rounded-xl shadow-sm flex items-center justify-center text-center">
-                <p class="text-gray-400">กรุณาซิงค์ข้อมูลเพื่อเริ่มการพยากรณ์</p>
-            </div>
-        </div>
-
-        <div id="predictionDisplay" class="hidden space-y-6">
-            
-            <div class="bg-white p-6 rounded-2xl shadow-md pure-logic-set">
-                <h2 class="text-lg font-bold text-green-800 flex items-center">
-                    <span>🛡️ Pure Logic Synthesis (Base Set)</span>
-                </h2>
-                <p class="text-xs text-green-600 mb-4">*คำนวณจากอุณหภูมิและดวงจันทร์ ล้วนๆ (ไม่ง้อ Social)</p>
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-4" id="pureLogicResult">
-                    </div>
-            </div>
-
-            <div class="bg-white p-6 rounded-2xl shadow-md logic-card">
-                <h2 class="text-lg font-bold text-blue-800 mb-4">🔮 Social Convergence Analysis</h2>
-                <div id="socialResult" class="space-y-4">
-                    </div>
-            </div>
-
-            <div id="vetoPanel" class="hidden p-4 rounded-xl veto-alert">
-                <p id="vetoMessage" class="text-red-700 font-medium"></p>
-            </div>
-        </div>
+<div class="container">
+    <div class="header">
+        <h1>Causal Engine V3.3 🔮</h1>
+        <p>Predictive Logic & Blind Test Mode</p>
     </div>
 
-    <script>
-        let engineData = null;
+    <div class="card">
+        <div class="label">เชื่อมต่อฐานข้อมูล Gist</div>
+        <div class="input-group">
+            <input type="text" id="gistUrl" placeholder="วาง Raw Gist URL ที่นี่...">
+            <button onclick="syncData()">SYNC DATA</button>
+        </div>
+        <div id="statusPanel"></div>
+    </div>
 
-        async function syncData() {
-            const url = document.getElementById('gistUrl').value;
-            if(!url) return alert('กรุณาใส่ Gist URL');
+    <div id="predictionDisplay" class="hidden">
+        <div class="card">
+            <div class="label" style="color: var(--success);">🛡️ Pure Logic Synthesis (Base Set)</div>
+            <p style="font-size: 12px; color: #666; margin-bottom: 15px;">*สังเคราะห์จากปัจจัยธรรมชาติ 100%</p>
+            <div class="grid" id="pureLogicResult"></div>
+        </div>
+
+        <div class="card">
+            <div class="label" style="color: var(--primary);">🔮 Social Convergence Analysis</div>
+            <div id="socialResult"></div>
+        </div>
+
+        <div id="vetoPanel" class="hidden veto-banner"></div>
+    </div>
+</div>
+
+<script>
+    let engineData = null;
+
+    async function syncData() {
+        const url = document.getElementById('gistUrl').value;
+        if(!url) return alert('กรุณาใส่ Gist URL');
+        try {
+            const response = await fetch(url);
+            engineData = await response.json();
+            document.getElementById('statusPanel').innerHTML = `<p class="status-success">✓ เชื่อมต่อข้อมูลสำเร็จ: งวด ${engineData.draws[0].date}</p>`;
+            runAnalysis();
+        } catch (e) {
+            alert('โหลดข้อมูลล้มเหลว ตรวจสอบ Raw URL');
+        }
+    }
+
+    function runAnalysis() {
+        const current = engineData.draws[0];
+        const temp = parseInt(current.recommendedTemp);
+        const isTempEven = temp % 2 === 0;
+        const lunar = current.lunarPhase;
+        const socialInputs = current.suggestedSocial.split(',').map(s => s.trim());
+
+        // 1. Calculate Top Digits
+        let digits = [0,1,2,3,4,5,6,7,8,9].map(d => {
+            let score = 0;
+            if(isTempEven && d % 2 === 0) score += 5;
+            if(!isTempEven && d % 2 !== 0) score += 5;
+            if(lunar === "Waxing Moon" && d >= 5) score += 3;
+            if(lunar === "Waning Moon" && d < 5) score += 3;
+            return { digit: d, score: score };
+        }).sort((a,b) => b.score - a.score);
+
+        const top4 = digits.slice(0, 4).map(d => d.digit);
+
+        // 2. Render Pure Logic
+        const pureContainer = document.getElementById('pureLogicResult');
+        let pairs = [`${top4[0]}${top4[1]}`, `${top4[0]}${top4[2]}`, `${top4[1]}${top4[3]}`];
+        pureContainer.innerHTML = pairs.map(p => `
+            <div class="pure-box">
+                <span class="label">Pure 2D</span>
+                <span class="pure-val">${p}</span>
+            </div>
+        `).join('') + `
+            <div class="pure-box" style="background:#dcfce7">
+                <span class="label">Key Digit</span>
+                <span class="pure-val" style="color:#166534">${top4[0]}</span>
+            </div>
+        `;
+
+        // 3. Render Social
+        const socialContainer = document.getElementById('socialResult');
+        let vetoTriggers = [];
+        socialContainer.innerHTML = socialInputs.map(s => {
+            let confidence = 50;
+            let matchCount = 0;
+            top4.forEach(d => { if(s.includes(d.toString())) matchCount++; });
+            confidence += (matchCount * 15);
             
-            try {
-                const response = await fetch(url);
-                engineData = await response.json();
-                document.getElementById('statusPanel').innerHTML = `<p class="text-green-600 font-bold">✓ Data Synced: ${engineData.draws[0].date}</p>`;
-                runAnalysis();
-            } catch (e) {
-                alert('โหลดข้อมูลล้มเหลว ตรวจสอบ URL');
+            let isSocialEven = parseInt(s) % 2 === 0;
+            if(s.length === 2 && isSocialEven !== isTempEven) {
+                confidence -= 30;
+                vetoTriggers.push(`⚠️ เลข ${s} ไม่สอดคล้องกับอุณหภูมิ (${isTempEven ? 'คู่' : 'คี่'})`);
             }
-        }
 
-        function runAnalysis() {
-            const current = engineData.draws[0];
-            const temp = parseInt(current.recommendedTemp);
-            const isTempEven = temp % 2 === 0;
-            const lunar = current.lunarPhase;
-            const socialInputs = current.suggestedSocial.split(',').map(s => s.trim());
-
-            // 1. Calculate Top Digits (Pure Logic)
-            let digits = [0,1,2,3,4,5,6,7,8,9].map(d => {
-                let score = 0;
-                if(isTempEven && d % 2 === 0) score += 5;
-                if(!isTempEven && d % 2 !== 0) score += 5;
-                if(lunar === "Waxing Moon" && d >= 5) score += 3;
-                if(lunar === "Waning Moon" && d < 5) score += 3;
-                return { digit: d, score: score };
-            }).sort((a,b) => b.score - a.score);
-
-            const top4 = digits.slice(0, 4).map(d => d.digit);
-
-            // 2. Generate Pure Logic Numbers (New in V3.3)
-            renderPureLogic(top4);
-
-            // 3. Social Integration & Veto Logic
-            renderSocialConvergence(socialInputs, top4, isTempEven);
-
-            document.getElementById('predictionDisplay').classList.remove('hidden');
-        }
-
-        function renderPureLogic(top4) {
-            const container = document.getElementById('pureLogicResult');
-            // Generate 2-Digit Pairs
-            let pairs = [
-                `${top4[0]}${top4[1]}`,
-                `${top4[0]}${top4[2]}`,
-                `${top4[1]}${top4[3]}`
-            ];
-            
-            container.innerHTML = pairs.map(p => `
-                <div class="bg-white border-2 border-green-200 p-3 rounded-lg text-center">
-                    <span class="text-xs block text-gray-400 font-bold uppercase">Pure 2D</span>
-                    <span class="text-2xl font-black text-green-700">${p}</span>
-                </div>
-            `).join('') + `
-                <div class="bg-green-600 p-3 rounded-lg text-center text-white">
-                    <span class="text-xs block text-green-200 font-bold">TOP DIGIT</span>
-                    <span class="text-2xl font-black">${top4[0]}</span>
+            const classGold = confidence >= 80 ? 'confidence-high' : '';
+            return `
+                <div class="social-item ${classGold}">
+                    <div><span style="font-size:24px; font-weight:bold;">${s}</span></div>
+                    <div style="text-align:right">
+                        <div style="font-size:10px; font-weight:bold; opacity:0.8;">CONFIDENCE</div>
+                        <div style="font-size:20px; font-weight:900;">${Math.min(confidence, 99)}%</div>
+                    </div>
                 </div>
             `;
+        }).join('');
+
+        if(vetoTriggers.length > 0) {
+            document.getElementById('vetoPanel').innerHTML = vetoTriggers[0];
+            document.getElementById('vetoPanel').classList.remove('hidden');
+        } else {
+            document.getElementById('vetoPanel').classList.add('hidden');
         }
 
-        function renderSocialConvergence(socials, top4, isTempEven) {
-            const container = document.getElementById('socialResult');
-            const vetoPanel = document.getElementById('vetoPanel');
-            let vetoTriggers = [];
+        document.getElementById('predictionDisplay').classList.remove('hidden');
+    }
+</script>
 
-            let html = socials.map(s => {
-                let confidence = 50;
-                let reasons = [];
-                
-                // Check against Top Digits
-                let matchCount = 0;
-                top4.forEach(d => { if(s.includes(d.toString())) matchCount++; });
-                
-                confidence += (matchCount * 15);
-                if(matchCount > 0) reasons.push(`${matchCount} Digits Match Logic`);
-
-                // Veto Check: If Social number is completely against Temp Parity
-                let isSocialEven = parseInt(s) % 2 === 0;
-                if(s.length === 2 && isSocialEven !== isTempEven) {
-                    confidence -= 30;
-                    vetoTriggers.push(`ระวัง: เลข ${s} ขัดแย้งกับหลักการอุณหภูมิ (${isTempEven ? 'คู่' : 'คี่'})`);
-                }
-
-                const bgColor = confidence >= 80 ? 'gold-gradient' : 'bg-gray-50';
-
-                return `
-                    <div class="${bgColor} p-4 rounded-xl border flex justify-between items-center shadow-sm">
-                        <div>
-                            <span class="text-2xl font-black">${s}</span>
-                            <p class="text-xs opacity-80">${reasons.join(' | ')}</p>
-                        </div>
-                        <div class="text-right">
-                            <span class="text-sm font-bold">Confidence</span>
-                            <div class="text-xl font-black">${Math.min(confidence, 99)}%</div>
-                        </div>
-                    </div>
-                `;
-            }).join('');
-
-            container.innerHTML = html;
-
-            if(vetoTriggers.length > 0) {
-                vetoPanel.classList.remove('hidden');
-                document.getElementById('vetoMessage').innerText = vetoTriggers[0];
-            } else {
-                vetoPanel.classList.add('hidden');
-            }
-        }
-    </script>
 </body>
 </html>
