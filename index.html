@@ -38,18 +38,19 @@
             width: 100%; 
             position: relative; 
             backdrop-filter: blur(25px);
+            z-index: 1;
         }
 
-        /* --- K.S. INNOVATIVE GRAPHIC LOGO BACKGROUND --- */
+        /* --- K.S. INNOVATIVE LOGO BG --- */
         .bg-logo {
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 300px;
-            height: 300px;
+            width: 320px;
+            height: 320px;
             z-index: -1;
-            opacity: 0.12;
+            opacity: 0.1;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -60,21 +61,22 @@
             position: absolute;
             width: 100%;
             height: 100%;
-            border: 15px solid transparent;
-            border-top: 15px solid var(--neon-cyan);
-            border-bottom: 15px solid var(--neon-pink);
+            border: 12px solid transparent;
+            border-top: 12px solid var(--neon-cyan);
+            border-bottom: 12px solid var(--neon-pink);
             border-radius: 50%;
-            filter: blur(2px);
-            animation: rotate 10s linear infinite;
+            filter: blur(1px);
+            animation: rotate 15s linear infinite;
         }
 
         .logo-s {
-            font-size: 180px;
+            font-size: 190px;
             font-weight: 900;
             background: var(--gradient-main);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             filter: blur(1px);
+            opacity: 0.8;
         }
 
         @keyframes rotate {
@@ -82,6 +84,7 @@
             to { transform: rotate(360deg); }
         }
 
+        /* --- UI ELEMENTS --- */
         .v-badge { 
             position: absolute; 
             top: 30px; 
@@ -93,10 +96,10 @@
             font-weight: bold; 
             letter-spacing: 1px;
             box-shadow: 0 0 20px rgba(255, 0, 85, 0.4);
-            z-index: 2;
+            z-index: 5;
         }
 
-        .draw-container { margin-bottom: 35px; position: relative; z-index: 2; }
+        .draw-container { margin-bottom: 35px; }
         .draw-label { font-size: 0.9rem; color: #888; letter-spacing: 2px; margin-bottom: 12px; }
         .draw-date-highlight {
             font-size: 2.3rem;
@@ -110,8 +113,7 @@
             display: inline-block;
         }
 
-        .label-th { font-size: 0.8rem; color: #aaa; letter-spacing: 1px; margin-bottom: 5px; position: relative; z-index: 2; }
-        
+        .label-th { font-size: 0.8rem; color: #aaa; letter-spacing: 1px; margin-bottom: 5px; }
         .main-num { 
             font-size: 7.8rem; 
             font-weight: 900; 
@@ -121,8 +123,6 @@
             margin: 0; 
             letter-spacing: 10px;
             line-height: 1.1;
-            position: relative;
-            z-index: 2;
         }
 
         .sub-num { 
@@ -132,8 +132,33 @@
             margin-bottom: 30px;
             text-shadow: 0 0 30px var(--neon-pink);
             letter-spacing: 6px;
-            position: relative;
-            z-index: 2;
+        }
+
+        /* --- PULSE GRAPH SECTION --- */
+        .graph-label {
+            font-size: 0.6rem;
+            color: #444;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-top: 25px;
+        }
+        .graph-container {
+            width: 100%;
+            height: 40px;
+            margin-top: 10px;
+            display: flex;
+            align-items: flex-end;
+            gap: 3px;
+            padding: 0 5px;
+            box-sizing: border-box;
+            opacity: 0.4;
+        }
+        .bar {
+            flex: 1;
+            background: var(--gradient-main);
+            border-radius: 1px;
+            height: 20%;
+            transition: height 0.6s ease;
         }
 
         .grid { 
@@ -143,8 +168,6 @@
             margin-top: 25px; 
             border-top: 1px solid rgba(255,255,255,0.1); 
             padding-top: 25px; 
-            position: relative;
-            z-index: 2;
         }
         .label { font-size: 0.65rem; color: #666; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 5px; }
         .val { font-size: 1.3rem; font-weight: bold; color: var(--neon-cyan); }
@@ -153,8 +176,6 @@
             margin-top: 40px;
             border-top: 1px solid rgba(255,255,255,0.05);
             padding-top: 20px;
-            position: relative;
-            z-index: 2;
         }
         .copyright-text {
             font-size: 0.85rem;
@@ -163,8 +184,8 @@
             font-weight: 600;
         }
         .collaboration-text {
-            font-size: 0.65rem;
-            color: rgba(0, 255, 204, 0.5);
+            font-size: 0.6rem;
+            color: rgba(0, 255, 204, 0.4);
             letter-spacing: 1.5px;
             text-transform: uppercase;
         }
@@ -182,7 +203,7 @@
     
     <div class="draw-container">
         <div class="draw-label">งวดประจำวันที่</div>
-        <div class="draw-date-highlight" id="draw-date">16 ม.ค. 69</div>
+        <div class="draw-date-highlight" id="draw-date">-- -- --</div>
     </div>
     
     <div class="label-th">เลข 3 ตัวท้ายรางวัลที่ 1</div>
@@ -191,11 +212,14 @@
     <div class="label-th" style="margin-top: 15px;">เลขท้าย 2 ตัว</div>
     <div class="sub-num" id="t2d">--</div>
 
+    <div class="graph-label">Quantum Probability Pulse</div>
+    <div class="graph-container" id="visualizer"></div>
+
     <div class="grid">
         <div><div class="label">Confidence</div><div class="val" id="conf">--%</div></div>
         <div><div class="label">Hit Rate (72)</div><div class="val" id="hit">--%</div></div>
         <div><div class="label">Temp Sync</div><div class="val" id="temp">--°C</div></div>
-        <div><div class="label">System Status</div><div class="val" style="font-size: 0.8rem; color: var(--neon-pink);" id="status">SYNCING...</div></div>
+        <div><div class="label">System Status</div><div class="val" style="font-size: 0.8rem; color: var(--neon-pink);" id="status">INITIALIZING...</div></div>
     </div>
 
     <div class="credits-container">
@@ -209,6 +233,24 @@
 </div>
 
 <script>
+    // สร้างแท่งกราฟ
+    const visualizer = document.getElementById('visualizer');
+    for (let i = 0; i < 30; i++) {
+        const bar = document.createElement('div');
+        bar.className = 'bar';
+        visualizer.appendChild(bar);
+    }
+
+    // ฟังก์ชันทำให้กราฟขยับ
+    function animateGraph() {
+        const bars = document.querySelectorAll('.bar');
+        bars.forEach(bar => {
+            const height = Math.random() * 90 + 10;
+            bar.style.height = height + '%';
+        });
+    }
+    setInterval(animateGraph, 700);
+
     async function updateDashboard() {
         const GIST_RAW_URL = "https://gist.githubusercontent.com/kittipan1984/f7a042eef3ccbcf7000c5ff84a0a53c3/raw/lottery-config.json";
 
@@ -223,19 +265,18 @@
             document.getElementById('temp').innerText = data.environment_sync.temp_ref + "°C";
             document.getElementById('status').innerText = data.status.toUpperCase();
             
-            if(data.next_draw.includes("2026-01-16")) {
-                document.getElementById('draw-date').innerText = "16 ม.ค. 69";
-            } else {
-                document.getElementById('draw-date').innerText = data.next_draw;
-            }
+            // อัปเดตวันที่อัตโนมัติจาก Gist
+            document.getElementById('draw-date').innerText = data.next_draw;
+
         } catch (err) {
             document.getElementById('status').innerText = "OFFLINE MODE";
             document.getElementById('t3d').innerText = "024";
             document.getElementById('t2d').innerText = "20";
         }
     }
+
     updateDashboard();
-    setInterval(updateDashboard, 300000);
+    setInterval(updateDashboard, 300000); // อัปเดตข้อมูลทุก 5 นาที
 </script>
 
 </body>
