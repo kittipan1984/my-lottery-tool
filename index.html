@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>V4.0 Singularity Pulse | Digital Oracle</title>
+    <title>V4.0 Singularity Pulse | Kittipan & Gemini Collaboration</title>
     <style>
         :root { 
             --neon-cyan: #00ffcc; 
@@ -14,172 +14,169 @@
         body { 
             background: var(--bg-dark); 
             color: #fff; 
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
+            font-family: 'Segoe UI', Tahoma, sans-serif; 
             display: flex; 
             justify-content: center; 
             align-items: center; 
             min-height: 100vh; 
             margin: 0;
-            overflow: hidden;
+            padding: 20px;
+            box-sizing: border-box;
         }
         .oracle-box { 
             background: var(--glass); 
             border: 1px solid var(--neon-cyan); 
-            padding: 40px; 
+            padding: 55px 40px 35px 40px; 
             border-radius: 40px; 
             text-align: center; 
-            box-shadow: 0 0 50px rgba(0, 255, 204, 0.15); 
-            max-width: 400px; 
-            width: 90%; 
+            box-shadow: 0 0 60px rgba(0, 255, 204, 0.2); 
+            max-width: 420px; 
+            width: 100%; 
             position: relative; 
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(15px);
         }
         .v-badge { 
             position: absolute; 
             top: 25px; 
-            right: 25px; 
+            left: 25px; 
             background: var(--neon-pink); 
-            font-size: 0.6rem; 
-            padding: 5px 12px; 
-            border-radius: 12px; 
+            font-size: 0.65rem; 
+            padding: 4px 12px; 
+            border-radius: 8px; 
             font-weight: bold; 
-            letter-spacing: 1.5px;
-            box-shadow: 0 0 15px var(--neon-pink);
+            letter-spacing: 1px;
+            box-shadow: 0 0 10px var(--neon-pink);
         }
-        .draw-label {
-            font-size: 0.7rem;
+        .draw-container { margin-bottom: 25px; }
+        .draw-label { font-size: 0.8rem; color: #888; letter-spacing: 2px; margin-bottom: 10px; }
+        .draw-date-highlight {
+            font-size: 2.2rem;
             color: var(--neon-cyan);
-            letter-spacing: 3px;
-            margin-bottom: 10px;
-            opacity: 0.8;
+            font-weight: 800;
+            text-shadow: 0 0 20px var(--neon-cyan);
+            background: rgba(0, 255, 204, 0.05);
+            padding: 10px 30px;
+            border: 1px solid rgba(0, 255, 204, 0.4);
+            border-radius: 20px;
+            display: inline-block;
         }
         .main-num { 
-            font-size: 6.5rem; 
+            font-size: 7.5rem; 
             font-weight: 900; 
             background: linear-gradient(to bottom, #fff, var(--neon-cyan)); 
             -webkit-background-clip: text; 
             -webkit-text-fill-color: transparent; 
             margin: 10px 0; 
             letter-spacing: 8px;
-            filter: drop-shadow(0 0 15px rgba(0,255,204,0.3));
         }
         .sub-num { 
-            font-size: 3.5rem; 
+            font-size: 4rem; 
             color: var(--neon-pink); 
             font-weight: bold; 
             margin-bottom: 25px;
+            text-shadow: 0 0 25px var(--neon-pink);
             letter-spacing: 5px;
-            text-shadow: 0 0 20px var(--neon-pink);
         }
         .grid { 
             display: grid; 
             grid-template-columns: 1fr 1fr; 
-            gap: 20px; 
-            margin-top: 30px; 
+            gap: 15px; 
+            margin-top: 25px; 
             border-top: 1px solid rgba(255,255,255,0.1); 
             padding-top: 25px; 
         }
-        .label { 
-            font-size: 0.65rem; 
-            color: #666; 
-            text-transform: uppercase; 
-            letter-spacing: 1.5px;
+        .label { font-size: 0.7rem; color: #666; text-transform: uppercase; letter-spacing: 1.5px; }
+        .val { font-size: 1.3rem; font-weight: bold; color: var(--neon-cyan); }
+        
+        /* Copyright & Credits Section */
+        .credits-container {
+            margin-top: 40px;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            padding-top: 20px;
+        }
+        .copyright-text {
+            font-size: 0.85rem;
+            color: rgba(255,255,255,0.6);
             margin-bottom: 5px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
         }
-        .val { 
-            font-size: 1.2rem; 
-            font-weight: bold; 
-            color: var(--neon-cyan); 
-        }
-        .status-bar {
-            margin-top: 30px;
-            font-size: 0.6rem;
-            color: #444;
+        .collaboration-text {
+            font-size: 0.65rem;
+            color: rgba(255,255,255,0.3);
+            font-style: italic;
             letter-spacing: 1px;
+            text-transform: uppercase;
         }
-        .sync-pulse {
-            display: inline-block;
-            width: 8px;
-            height: 8px;
-            background: var(--neon-cyan);
-            border-radius: 50%;
-            margin-right: 8px;
-            animation: blink 1.5s infinite;
+        .partner-highlight {
+            color: var(--neon-cyan);
+            opacity: 0.8;
         }
-        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
     </style>
 </head>
 <body>
 
 <div class="oracle-box">
     <div class="v-badge">V4.0 SINGULARITY</div>
-    <div class="draw-label" id="draw-date">NEXT DRAW: --/--/--</div>
     
-    <div style="margin-top: 30px;" class="label">3-Digit Strict Target</div>
+    <div class="draw-container">
+        <div class="draw-label">งวดประจำวันที่</div>
+        <div class="draw-date-highlight" id="draw-date">16 ม.ค. 69</div>
+    </div>
+    
+    <div class="label">3-Digit Strict Target</div>
     <div class="main-num" id="t3d">---</div>
     
     <div class="label">2-Digit Strict Target</div>
     <div class="sub-num" id="t2d">--</div>
 
     <div class="grid">
-        <div>
-            <div class="label">Confidence</div>
-            <div class="val" id="conf">--%</div>
-        </div>
-        <div>
-            <div class="label">Hit Rate (72)</div>
-            <div class="val" id="hit">--%</div>
-        </div>
-        <div>
-            <div class="label">Temp Sync</div>
-            <div class="val" id="temp">--°C</div>
-        </div>
-        <div>
-            <div class="label">System Status</div>
-            <div class="val" style="font-size: 0.8rem; color: var(--neon-pink);" id="status">INITIALIZING...</div>
-        </div>
+        <div><div class="label">Confidence</div><div class="val" id="conf">--%</div></div>
+        <div><div class="label">Hit Rate (72)</div><div class="val" id="hit">--%</div></div>
+        <div><div class="label">Temp Sync</div><div class="val" id="temp">--°C</div></div>
+        <div><div class="label">System Status</div><div class="val" style="font-size: 0.8rem; color: var(--neon-pink);" id="status">SYNCING...</div></div>
     </div>
 
-    <div class="status-bar">
-        <span class="sync-pulse"></span>NEXUS QUANTUM LINK: <span id="sync-id">ESTABLISHING</span>
+    <div class="credits-container">
+        <div class="copyright-text">
+            © 2026 Kittipan Siripatthajak & <span class="partner-highlight">Gemini AI Partner</span>
+        </div>
+        <div class="collaboration-text">
+            Joint Mathematical Exploration & Probability Research
+        </div>
     </div>
 </div>
 
 <script>
     async function updateDashboard() {
-        // เชื่อมต่อโดยตรงกับไฟล์ JSON บน Gist ของคุณ
         const GIST_RAW_URL = "https://gist.githubusercontent.com/kittipan1984/f7a042eef3ccbcf7000c5ff84a0a53c3/raw/lottery-config.json";
 
         try {
-            // เติม Timestamp เพื่อบังคับให้ดึงข้อมูลใหม่ (No Cache)
             const response = await fetch(`${GIST_RAW_URL}?t=${new Date().getTime()}`);
-            if (!response.ok) throw new Error('Sync Error');
-            
             const data = await response.json();
             
-            // อัปเดตข้อมูลบนหน้าจอ
             document.getElementById('t3d').innerText = data.predictions.target3D;
             document.getElementById('t2d').innerText = data.predictions.target2D;
             document.getElementById('conf').innerText = data.predictions.confidence_score + "%";
             document.getElementById('hit').innerText = data.predictions.hit_rate_v4 + "%";
             document.getElementById('temp').innerText = data.environment_sync.temp_ref + "°C";
-            document.getElementById('draw-date').innerText = "NEXT DRAW: " + data.next_draw;
             document.getElementById('status').innerText = data.status.toUpperCase();
-            document.getElementById('sync-id').innerText = "ACTIVE";
-            document.getElementById('status').style.color = "var(--neon-cyan)";
+            
+            if(data.next_draw.includes("2026-01-16")) {
+                document.getElementById('draw-date').innerText = "16 ม.ค. 69";
+            } else {
+                document.getElementById('draw-date').innerText = data.next_draw;
+            }
 
         } catch (err) {
-            console.error("Link Failure:", err);
+            console.log("Error fetching data, using fallback.");
             document.getElementById('status').innerText = "OFFLINE MODE";
-            document.getElementById('sync-id').innerText = "DISCONNECTED";
-            // ข้อมูลสำรองกรณีเชื่อมต่อไม่ได้
             document.getElementById('t3d').innerText = "024";
             document.getElementById('t2d').innerText = "20";
         }
     }
 
     updateDashboard();
-    // อัปเดตทุก 5 นาที เผื่อคุณมีการแก้ไขตัวเลขใน Gist
     setInterval(updateDashboard, 300000);
 </script>
 
