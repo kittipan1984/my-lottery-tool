@@ -3,98 +3,73 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Deterministic Causal Engine V3.3</title>
+    <title>Deterministic Causal Engine V3.3 (Light Mode)</title>
     <style>
         :root {
-            --bg: #0f172a;
-            --card: #1e293b;
-            --primary: #3b82f6;
+            --bg: #f8fafc;
+            --card: #ffffff;
+            --primary: #2563eb;
             --accent: #f59e0b;
             --success: #10b981;
-            --text: #f8fafc;
+            --text-main: #1e293b;
+            --text-sub: #64748b;
+            --border: #e2e8f0;
         }
         body { 
-            font-family: 'Inter', system-ui, sans-serif; 
+            font-family: 'Inter', system-ui, -apple-system, sans-serif; 
             background-color: var(--bg); 
-            color: var(--text);
-            margin: 0; 
-            padding: 20px;
+            color: var(--text-main);
+            margin: 0; padding: 20px; line-height: 1.5;
         }
-        .container { max-width: 900px; margin: 0 auto; }
+        .container { max-width: 850px; margin: 0 auto; }
         .card { 
             background: var(--card); 
-            padding: 24px; 
-            border-radius: 16px; 
-            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.3);
-            margin-bottom: 24px;
-        }
-        .header { text-align: center; margin-bottom: 40px; }
-        .header h1 { font-size: 2.5rem; margin-bottom: 8px; color: var(--primary); }
-        
-        .input-group { display: flex; gap: 12px; margin: 20px 0; }
-        input { 
-            flex: 1; 
-            padding: 14px; 
-            background: #334155; 
-            border: 1px solid #475569; 
-            border-radius: 12px; 
-            color: white;
-            font-size: 14px;
-        }
-        button { 
-            padding: 14px 28px; 
-            background: var(--primary); 
-            color: white; 
-            border: none; 
-            border-radius: 12px; 
-            cursor: pointer; 
-            font-weight: bold;
-            transition: transform 0.2s;
-        }
-        button:hover { transform: scale(1.02); background: #2563eb; }
-
-        /* การแสดงผลเลขเด่น (Classic Style) */
-        .digit-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-top: 20px; }
-        .digit-card { 
-            background: #334155; 
-            padding: 20px; 
-            border-radius: 12px; 
-            text-align: center;
-            border-bottom: 4px solid var(--primary);
-        }
-        .digit-val { font-size: 2.5rem; font-weight: 900; display: block; }
-        
-        /* สังเคราะห์ 2-3 ตัว */
-        .result-section { margin-top: 30px; }
-        .section-title { font-size: 1.2rem; font-weight: bold; margin-bottom: 15px; display: flex; align-items: center; gap: 8px; }
-        
-        .synthesis-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 12px; }
-        .synthesis-item { 
-            background: #334155; 
-            padding: 15px; 
-            border-radius: 12px; 
-            text-align: center;
-            font-size: 1.5rem;
-            font-weight: bold;
-        }
-        .synthesis-item.gold { 
-            background: linear-gradient(135deg, #f59e0b, #d97706);
-            color: white;
-        }
-
-        /* ตาราง Social Ranking */
-        .social-table { width: 100%; border-collapse: collapse; margin-top: 15px; }
-        .social-table td { padding: 16px; background: #334155; border-bottom: 1px solid #1e293b; }
-        .social-table tr:last-child td { border: none; }
-        .confidence-badge { 
-            padding: 4px 12px; 
+            padding: 25px; 
             border-radius: 20px; 
-            font-size: 0.8rem; 
-            font-weight: bold;
-            background: var(--primary);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            margin-bottom: 25px;
+            border: 1px solid var(--border);
+        }
+        .header { text-align: center; margin-bottom: 30px; }
+        .header h1 { font-size: 2rem; color: var(--primary); margin: 0; }
+        
+        .setup-box { display: flex; flex-direction: column; gap: 15px; }
+        .input-row { display: flex; gap: 10px; }
+        input, select { 
+            flex: 1; padding: 12px; border: 1px solid var(--border); 
+            border-radius: 12px; font-size: 15px; outline: none;
+        }
+        input:focus, select:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1); }
+        button { 
+            padding: 12px 25px; background: var(--primary); color: white; 
+            border: none; border-radius: 12px; cursor: pointer; font-weight: 600;
         }
 
-        .veto-box { background: #450a0a; color: #fca5a5; padding: 15px; border-radius: 12px; margin-top: 20px; font-size: 0.9rem; border: 1px solid #7f1d1d; }
+        /* Stats Grid */
+        .digit-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 15px 0; }
+        .digit-item { 
+            background: #f1f5f9; padding: 15px; border-radius: 15px; text-align: center;
+            border: 2px solid transparent; transition: 0.3s;
+        }
+        .digit-item.top { border-color: var(--accent); background: #fffbeb; }
+        .digit-val { font-size: 1.8rem; font-weight: 800; color: var(--primary); }
+
+        /* Prediction Styles */
+        .result-box { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; }
+        .pred-num { 
+            background: #f8fafc; border: 1px solid var(--border); 
+            padding: 15px; border-radius: 12px; text-align: center; font-size: 1.4rem; font-weight: 700;
+        }
+        .pred-num.best { background: var(--success); color: white; border: none; }
+
+        /* Social Table */
+        .social-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        .social-table td { padding: 14px; border-bottom: 1px solid var(--border); }
+        .conf-label { font-size: 0.75rem; color: var(--text-sub); font-weight: bold; }
+        .conf-bar-bg { background: #e2e8f0; height: 8px; border-radius: 4px; overflow: hidden; margin-top: 5px; }
+        .conf-bar-fill { background: var(--primary); height: 100%; }
+
+        .tag { font-size: 0.7rem; font-weight: bold; padding: 3px 8px; border-radius: 5px; background: #e2e8f0; color: #475569; }
         .hidden { display: none; }
     </style>
 </head>
@@ -103,63 +78,74 @@
 <div class="container">
     <div class="header">
         <h1>Causal Engine V3.3</h1>
-        <p style="color: #94a3b8;">Deterministic System & AI Predictive Model</p>
+        <p style="color: var(--text-sub);">Environment-Based Logic System</p>
     </div>
 
     <div class="card">
-        <div class="input-group">
-            <input type="text" id="gistUrl" placeholder="ป้อน Raw Gist URL ของคุณที่นี่...">
-            <button onclick="syncData()">ซิงค์ข้อมูล</button>
+        <div class="setup-box">
+            <div class="input-row">
+                <input type="text" id="gistUrl" placeholder="วาง Raw Gist URL ที่นี่...">
+                <button onclick="fetchGist()">โหลดข้อมูล</button>
+            </div>
+            <div id="selectorContainer" class="hidden">
+                <label style="font-size: 0.8rem; font-weight: 600; color: var(--text-sub);">เลือกงวดวันที่ต้องการวิเคราะห์:</label>
+                <select id="drawSelector" onchange="runAnalysis()"></select>
+            </div>
         </div>
-        <div id="statusPanel" style="text-align: center; font-size: 0.9rem;"></div>
     </div>
 
     <div id="predictionDisplay" class="hidden">
         
         <div class="card">
-            <div class="section-title">🎯 อันดับเลขเด่น (Top 4 Digits)</div>
+            <div style="font-weight: 700; margin-bottom: 10px;">🎯 อันดับเลขวิ่ง (Deterministic Ranking)</div>
             <div class="digit-grid" id="topDigitsResult"></div>
         </div>
 
-        <div class="card" style="border-top: 4px solid var(--success);">
-            <div class="section-title" style="color: var(--success);">🛡️ สังเคราะห์ Pure Logic (ไม่ต้องใช้ Social)</div>
-            <p style="font-size: 0.8rem; color: #94a3b8; margin-bottom: 15px;">*สร้างจากความสัมพันธ์ของอุณหภูมิและดวงจันทร์</p>
-            <div class="synthesis-grid" id="pureGenResult"></div>
+        <div class="card" style="border-top: 5px solid var(--success);">
+            <div style="font-weight: 700; color: var(--success); margin-bottom: 5px;">🛡️ Pure Logic Synthesis</div>
+            <p style="font-size: 0.75rem; color: var(--text-sub); margin-bottom: 15px;">สังเคราะห์จากอุณหภูมิและดวงจันทร์ (ไม่พึ่งพา Social)</p>
+            <div class="result-box" id="pureGenResult"></div>
         </div>
 
         <div class="card">
-            <div class="section-title">🔮 วิเคราะห์จากข้อมูล Social</div>
+            <div style="font-weight: 700; color: var(--primary); margin-bottom: 10px;">🔮 Social Convergence Analysis</div>
             <table class="social-table" id="socialResult"></table>
-            <div id="vetoPanel" class="hidden veto-box"></div>
+            <div id="vetoPanel" class="hidden" style="margin-top:15px; color:red; font-size:0.85rem; font-weight:bold;"></div>
         </div>
 
     </div>
 </div>
 
 <script>
-    let engineData = null;
+    let allDraws = [];
 
-    async function syncData() {
+    async function fetchGist() {
         const url = document.getElementById('gistUrl').value;
         if(!url) return alert('กรุณาใส่ Gist URL');
         try {
             const response = await fetch(url);
-            engineData = await response.json();
-            document.getElementById('statusPanel').innerHTML = `<span style="color:var(--success)">✓ เชื่อมต่อสำเร็จ: งวด ${engineData.draws[0].date}</span>`;
+            const data = await response.json();
+            allDraws = data.draws;
+            
+            const selector = document.getElementById('drawSelector');
+            selector.innerHTML = allDraws.map((d, i) => `<option value="${i}">${d.date}</option>`).join('');
+            
+            document.getElementById('selectorContainer').classList.remove('hidden');
             runAnalysis();
         } catch (e) {
-            alert('โหลดข้อมูลล้มเหลว ตรวจสอบ Raw URL');
+            alert('โหลดข้อมูลล้มเหลว ตรวจสอบ URL');
         }
     }
 
     function runAnalysis() {
-        const current = engineData.draws[0];
+        const index = document.getElementById('drawSelector').value;
+        const current = allDraws[index];
         const temp = parseInt(current.recommendedTemp);
         const isTempEven = temp % 2 === 0;
         const lunar = current.lunarPhase;
         const socialInputs = current.suggestedSocial.split(',').map(s => s.trim());
 
-        // 1. Logic การคำนวณ Ranking
+        // 1. Calculate Logic Scores
         let digits = [0,1,2,3,4,5,6,7,8,9].map(d => {
             let score = 0;
             if(isTempEven && d % 2 === 0) score += 5;
@@ -172,15 +158,15 @@
         const top4 = digits.slice(0, 4);
         const top4Vals = top4.map(d => d.digit);
 
-        // แสดงผลเลขเด่น
+        // Render Top Digits
         document.getElementById('topDigitsResult').innerHTML = top4.map((d, i) => `
-            <div class="digit-card" style="${i === 0 ? 'border-color:var(--accent)' : ''}">
-                <span style="font-size:0.7rem; color:#94a3b8; font-weight:bold;">อันดับ ${i+1}</span>
-                <span class="digit-val" style="${i === 0 ? 'color:var(--accent)' : ''}">${d.digit}</span>
+            <div class="digit-item ${i === 0 ? 'top' : ''}">
+                <div class="tag">อันดับ ${i+1}</div>
+                <div class="digit-val">${d.digit}</div>
             </div>
         `).join('');
 
-        // 2. สังเคราะห์เลขชุด (Pure Logic)
+        // 2. Pure Logic Synthesis
         const pureGen = [
             `${top4Vals[0]}${top4Vals[1]}`,
             `${top4Vals[0]}${top4Vals[2]}`,
@@ -188,40 +174,41 @@
             `${top4Vals[1]}${top4Vals[3]}`
         ];
         document.getElementById('pureGenResult').innerHTML = pureGen.map((p, i) => `
-            <div class="synthesis-item ${i === 2 ? 'gold' : ''}">${p}</div>
+            <div class="pred-num ${i === 2 ? 'best' : ''}">${p}</div>
         `).join('');
 
-        // 3. วิเคราะห์ Social
-        let vetoTriggers = [];
+        // 3. Social Analysis
+        let vetoMsg = "";
         document.getElementById('socialResult').innerHTML = socialInputs.map(s => {
             let confidence = 50;
-            let matchCount = 0;
-            top4Vals.forEach(d => { if(s.includes(d.toString())) matchCount++; });
-            confidence += (matchCount * 12);
+            top4Vals.forEach(d => { if(s.includes(d.toString())) confidence += 12; });
             
             let isSocialEven = parseInt(s) % 2 === 0;
             if(s.length === 2 && isSocialEven !== isTempEven) {
-                confidence -= 25;
-                vetoTriggers.push(`⚠️ เลข "${s}" ขัดแย้งกับหลักการอุณหภูมิ (${isTempEven ? 'เลขคู่' : 'เลขคี่'})`);
+                confidence -= 20;
+                vetoMsg = `⚠️ ระวัง: เลขบางชุดขัดแย้งกับหลักการอุณหภูมิ (${isTempEven ? 'คู่' : 'คี่'})`;
             }
 
+            const confPercent = Math.min(confidence, 99);
             return `
                 <tr>
-                    <td style="font-size:1.8rem; font-weight:bold;">${s}</td>
-                    <td style="text-align:right">
-                        <span class="confidence-badge" style="background:${confidence > 75 ? 'var(--accent)' : 'var(--primary)'}">
-                            Confidence: ${Math.min(confidence, 99)}%
-                        </span>
+                    <td><span style="font-size:1.4rem; font-weight:800;">${s}</span></td>
+                    <td style="width: 60%;">
+                        <div class="conf-label">CONFIDENCE: ${confPercent}%</div>
+                        <div class="conf-bar-bg">
+                            <div class="conf-bar-fill" style="width: ${confPercent}%; background: ${confPercent > 75 ? '#f59e0b' : '#2563eb'}"></div>
+                        </div>
                     </td>
                 </tr>
             `;
         }).join('');
 
-        if(vetoTriggers.length > 0) {
-            document.getElementById('vetoPanel').innerHTML = vetoTriggers[0];
-            document.getElementById('vetoPanel').classList.remove('hidden');
+        const vetoPanel = document.getElementById('vetoPanel');
+        if(vetoMsg) {
+            vetoPanel.innerText = vetoMsg;
+            vetoPanel.classList.remove('hidden');
         } else {
-            document.getElementById('vetoPanel').classList.add('hidden');
+            vetoPanel.classList.add('hidden');
         }
 
         document.getElementById('predictionDisplay').classList.remove('hidden');
