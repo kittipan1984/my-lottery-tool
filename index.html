@@ -22,6 +22,7 @@
             align-items: center; 
             min-height: 100vh; 
             margin: 0;
+            overflow: hidden;
         }
 
         .oracle-container { 
@@ -59,7 +60,6 @@
 
         .label { font-size: 0.65rem; color: #666; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px; }
         
-        /* ยกเลิกการเบลอตามสั่ง */
         .value { 
             font-size: 3rem; font-weight: 800; 
             color: var(--architect-white); letter-spacing: 2px;
@@ -68,7 +68,6 @@
 
         .win-rate { font-size: 0.65rem; color: #00ff00; margin-top: 10px; font-weight: 600; }
 
-        /* Branding & Copyright Area */
         .footer-branding {
             text-align: center;
             border-top: 1px solid rgba(255,255,255,0.1);
@@ -91,7 +90,7 @@
             font-size: 0.9rem;
         }
 
-        #status-msg { font-size: 0.6rem; color: #444; margin-top: 10px; }
+        #status-msg { font-size: 0.6rem; color: #444; margin-top: 10px; text-transform: uppercase; }
 
     </style>
 </head>
@@ -101,7 +100,7 @@
     <div class="version-tag">V7.0 THE ARCHITECT</div>
     
     <div class="draw-header">K.S. INNOVATIVE QUANTUM PREDICTION</div>
-    <div class="draw-date" id="target-date">Loading...</div>
+    <div class="draw-date" id="target-date">---</div>
 
     <div class="grid-system">
         <div class="card">
@@ -140,20 +139,22 @@
 </div>
 
 <script>
-    const URL = "https://gist.githubusercontent.com/kittipan1984/f7a042eef3ccbcf7000c5ff84a0a53c3/raw/lottery-config.json";
+    // ใช้ลิงก์ Permanent Raw เพื่อให้ดึงค่าล่าสุดเสมอ
+    const GIST_URL = "https://gist.githubusercontent.com/kittipan1984/f7a042eef3ccbcf7000c5ff84a0a53c3/raw/lottery-config.json";
 
     async function syncData() {
         try {
-            // เพิ่ม nocache เพื่อให้เลขเปลี่ยนทันทีที่อัปเดต Gist
-            const response = await fetch(`${URL}?t=${new Date().getTime()}`);
+            // เพิ่ม Timestamp เพื่อป้องกัน Browser Cache (บังคับโหลดใหม่)
+            const response = await fetch(`${GIST_URL}?t=${new Date().getTime()}`);
+            if (!response.ok) throw new Error('Network response was not ok');
+            
             const data = await response.json();
             
-            // ตรวจสอบโครงสร้างข้อมูลให้ตรงกับ Gist
             if (data.predictions) {
-                document.getElementById('t3d').innerText = data.predictions.target3D || "---";
-                document.getElementById('t2d').innerText = data.predictions.target2D || "--";
-                document.getElementById('f3d').innerText = data.predictions.front3D || "---";
-                document.getElementById('b3d').innerText = data.predictions.back3D || "---";
+                document.getElementById('t3d').innerText = data.predictions.target3D;
+                document.getElementById('t2d').innerText = data.predictions.target2D;
+                document.getElementById('f3d').innerText = data.predictions.front3D;
+                document.getElementById('b3d').innerText = data.predictions.back3D;
             }
             
             if (data.next_draw) {
@@ -163,16 +164,17 @@
                 });
             }
 
-            document.getElementById('status-msg').innerText = "LAST SYNC: " + new Date().toLocaleTimeString();
+            document.getElementById('status-msg').innerText = "LAST SYNC: " + new Date().toLocaleTimeString() + " | DATA: SECURE";
 
         } catch (error) {
             console.error("Sync Error:", error);
-            document.getElementById('status-msg').innerText = "SYNC FAILED: CHECK CONNECTION";
+            document.getElementById('status-msg').innerText = "SYNC FAILED: RETRYING...";
         }
     }
 
+    // เริ่มทำงานทันทีและอัปเดตทุก 30 วินาที
     syncData();
-    setInterval(syncData, 30000); // อัปเดตทุก 30 วินาที
+    setInterval(syncData, 30000);
 </script>
 
 </body>
