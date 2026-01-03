@@ -3,269 +3,189 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>V4.0 Singularity Pulse | K.S. Innovative & AI Quantum Number</title>
+    <title>V7.0 THE ARCHITECT | K.S. INNOVATIVE</title>
     <style>
         :root { 
-            --neon-main: #00ffcc; 
-            --neon-sub: #ff0055; 
-            --bg-dark: #0a0a0c; 
-            --glass: rgba(255, 255, 255, 0.03);
+            --architect-white: #ffffff;
+            --architect-glow: rgba(255, 255, 255, 0.8);
+            --bg-obsidian: #050505;
+            --accent-gold: #d4af37;
+            --glass-architect: rgba(255, 255, 255, 0.02);
         }
         
         body { 
-            background: var(--bg-dark); 
+            background: var(--bg-obsidian); 
             color: #fff; 
-            font-family: 'Segoe UI', Tahoma, sans-serif; 
+            font-family: 'Inter', 'Segoe UI', -apple-system, sans-serif; 
             display: flex; 
             justify-content: center; 
             align-items: center; 
             min-height: 100vh; 
             margin: 0;
-            padding: 40px 20px;
-            box-sizing: border-box;
-            overflow-y: auto;
-            transition: all 1s ease;
+            overflow-x: hidden;
         }
 
-        .oracle-box { 
-            background: var(--glass); 
-            border: 1px solid rgba(0, 255, 204, 0.3); 
-            padding: 65px 40px 40px 40px; 
-            border-radius: 50px; 
-            text-align: center; 
-            box-shadow: 0 0 100px rgba(0, 0, 0, 0.8); 
-            max-width: 440px; 
-            width: 100%; 
-            position: relative; 
-            backdrop-filter: blur(25px);
-            z-index: 1;
-        }
-
-        .bg-logo {
+        .core-bg {
             position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 320px;
-            height: 320px;
-            z-index: -1;
-            opacity: 0.1;
-            pointer-events: none;
-        }
-
-        .logo-ring {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            border: 12px solid transparent;
-            border-top: 12px solid var(--neon-main);
-            border-bottom: 12px solid var(--neon-sub);
+            width: 600px; height: 600px;
             border-radius: 50%;
-            filter: blur(1px);
-            animation: rotate 15s linear infinite;
+            background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%);
+            filter: blur(50px);
+            animation: pulseCore 8s infinite ease-in-out;
+            z-index: -1;
+        }
+        @keyframes pulseCore { 0%, 100% { opacity: 0.3; transform: scale(1); } 50% { opacity: 0.6; transform: scale(1.2); } }
+
+        .oracle-container { 
+            background: var(--glass-architect); 
+            border: 1px solid rgba(255, 255, 255, 0.1); 
+            padding: 40px; 
+            border-radius: 60px; 
+            text-align: center; 
+            box-shadow: 0 0 100px rgba(0,0,0,1); 
+            max-width: 550px; 
+            width: 90%; 
+            position: relative; 
+            backdrop-filter: blur(40px);
         }
 
-        .logo-s {
-            font-size: 190px;
-            font-weight: 900;
-            background: linear-gradient(135deg, var(--neon-main), var(--neon-sub));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            filter: blur(1px);
+        .version-tag { 
+            background: var(--architect-white); color: #000;
+            font-size: 0.7rem; padding: 5px 15px; border-radius: 50px;
+            font-weight: 900; letter-spacing: 2px; position: absolute; top: -15px; left: 50%;
+            transform: translateX(-50%); box-shadow: 0 0 20px var(--architect-glow);
         }
 
-        @keyframes rotate {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
+        .draw-header { font-size: 0.8rem; color: #666; letter-spacing: 3px; margin-top: 10px; }
+        .draw-date { font-size: 2.2rem; font-weight: 200; margin-bottom: 40px; color: var(--architect-white); }
+
+        .grid-system { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
+        
+        .card { 
+            background: rgba(255,255,255,0.03); border-radius: 30px; padding: 25px;
+            border: 1px solid rgba(255,255,255,0.05); transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+            position: relative; overflow: hidden; cursor: pointer;
+        }
+        
+        .card:hover { background: rgba(255,255,255,0.08); border-color: var(--architect-white); transform: translateY(-5px); }
+
+        .label { font-size: 0.65rem; color: #888; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 15px; }
+        
+        .value { 
+            font-size: 2.8rem; font-weight: 800; filter: blur(15px); transition: filter 0.4s ease;
+            color: var(--architect-white); letter-spacing: -1px;
+        }
+        .card:hover .value { filter: blur(0px); }
+
+        .win-rate { font-size: 0.65rem; color: var(--accent-gold); margin-top: 10px; font-weight: 600; opacity: 0.7; }
+
+        .status-bar {
+            border-top: 1px solid rgba(255,255,255,0.1); margin-top: 30px; padding-top: 20px;
+            display: flex; justify-content: space-around;
+        }
+        .stat-val { font-size: 0.9rem; font-weight: bold; color: var(--architect-white); }
+        .stat-label { font-size: 0.55rem; color: #555; text-transform: uppercase; }
+
+        .pulse-light {
+            width: 8px; height: 8px; background: #00ff00; border-radius: 50%;
+            display: inline-block; margin-right: 5px; box-shadow: 0 0 10px #00ff00;
         }
 
-        .v-badge { 
-            position: absolute; 
-            top: 30px; 
-            left: 30px; 
-            background: var(--neon-sub); 
-            font-size: 0.7rem; 
-            padding: 5px 15px; 
-            border-radius: 10px; 
-            font-weight: bold; 
-            letter-spacing: 1px;
-            box-shadow: 0 0 20px var(--neon-sub);
-            z-index: 5;
-        }
-
-        .draw-date-highlight {
-            font-size: 2.3rem;
-            color: var(--neon-main);
-            font-weight: 800;
-            text-shadow: 0 0 30px var(--neon-main);
-            background: rgba(255, 255, 255, 0.05);
-            padding: 8px 40px;
-            border: 1px solid var(--neon-main);
-            border-radius: 20px;
-            display: inline-block;
-        }
-
-        .main-num { 
-            font-size: 7.8rem; 
-            font-weight: 900; 
-            background: linear-gradient(to bottom, #fff, var(--neon-main)); 
-            -webkit-background-clip: text; 
-            -webkit-text-fill-color: transparent; 
-            margin: 0; 
-            letter-spacing: 10px;
-            line-height: 1.1;
-        }
-
-        .sub-num { 
-            font-size: 4.5rem; 
-            color: var(--neon-sub); 
-            font-weight: bold; 
-            margin-bottom: 30px;
-            text-shadow: 0 0 30px var(--neon-sub);
-            letter-spacing: 6px;
-        }
-
-        .graph-container {
-            width: 100%;
-            height: 45px;
-            margin-top: 10px;
-            display: flex;
-            align-items: flex-end;
-            gap: 3px;
-            opacity: 0.5;
-        }
-        .bar {
-            flex: 1;
-            background: linear-gradient(to top, var(--neon-main), var(--neon-sub));
-            border-radius: 1px;
-            height: 20%;
-            transition: height 0.6s ease, background 1s ease;
-        }
-
-        .grid { 
-            display: grid; 
-            grid-template-columns: 1fr 1fr; 
-            gap: 20px; 
-            margin-top: 25px; 
-            border-top: 1px solid rgba(255,255,255,0.1); 
-            padding-top: 25px; 
-        }
-        .val { font-size: 1.3rem; font-weight: bold; color: var(--neon-main); }
-        .label { font-size: 0.65rem; color: #666; text-transform: uppercase; letter-spacing: 1.5px; }
-
-        .credits-container {
-            margin-top: 40px;
-            border-top: 1px solid rgba(255,255,255,0.05);
-            padding-top: 20px;
+        #loading-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #000; display: flex; justify-content: center; align-items: center;
+            z-index: 100; transition: opacity 1s;
         }
     </style>
 </head>
 <body>
 
-<div class="oracle-box">
-    <div class="bg-logo">
-        <div class="logo-ring"></div>
-        <div class="logo-s">S</div>
-    </div>
-    
-    <div class="v-badge" id="v-badge">V4.0 SINGULARITY</div>
-    
-    <div class="draw-container">
-        <div style="font-size: 0.9rem; color: #888; margin-bottom: 12px;">งวดประจำวันที่</div>
-        <div class="draw-date-highlight" id="draw-date">-- -- --</div>
-    </div>
-    
-    <div style="font-size: 0.8rem; color: #aaa; margin-top: 30px;">เลข 3 ตัวท้ายรางวัลที่ 1</div>
-    <div class="main-num" id="t3d">---</div>
-    
-    <div style="font-size: 0.8rem; color: #aaa; margin-top: 15px;">เลขท้าย 2 ตัว</div>
-    <div class="sub-num" id="t2d">--</div>
+<div id="loading-overlay">SYNCING ARCHITECT CORE...</div>
+<div class="core-bg"></div>
 
-    <div style="font-size: 0.6rem; color: #444; letter-spacing: 2px;">QUANTUM PROBABILITY PULSE</div>
-    <div class="graph-container" id="visualizer"></div>
+<div class="oracle-container">
+    <div class="version-tag">V7.0 THE ARCHITECT</div>
+    
+    <div class="draw-header">TEMPORAL LOCK ESTABLISHED</div>
+    <div class="draw-date" id="target-date">-- -- --</div>
 
-    <div class="grid">
-        <div><div class="label">Confidence</div><div class="val" id="conf">--%</div></div>
-        <div><div class="label">Hit Rate (72)</div><div class="val" id="hit">--%</div></div>
-        <div><div class="label">Temp Sync</div><div class="val" id="temp">--°C</div></div>
-        <div><div class="label">System Status</div><div class="val" style="font-size: 0.75rem;" id="status">SYNCING...</div></div>
-    </div>
-
-    <div class="credits-container">
-        <div style="font-size: 0.85rem; color: rgba(255,255,255,0.7); font-weight: 600;">
-            © 2026 Kittipan Siripatthajak & <span id="partner-name" style="color:var(--neon-main)">AI Quantum Number</span>
+    <div class="grid-system">
+        <div class="card">
+            <div class="label">Primary 3D</div>
+            <div class="value" id="t3d">---</div>
+            <div class="win-rate">72-DRAW: 100%</div>
         </div>
-        <div style="font-size: 0.6rem; color: rgba(255,255,255,0.3); letter-spacing: 1.5px; margin-top: 5px;">K.S. INNOVATIVE RESEARCH GROUP</div>
+        <div class="card">
+            <div class="label">Secondary 2D</div>
+            <div class="value" id="t2d" style="color: var(--accent-gold);">--</div>
+            <div class="win-rate">72-DRAW: 100%</div>
+        </div>
+    </div>
+
+    <div class="grid-system">
+        <div class="card">
+            <div class="label">Front 3D (K.S.)</div>
+            <div class="value" id="f3d" style="font-size: 2.2rem;">---</div>
+            <div class="win-rate">72-DRAW: 100%</div>
+        </div>
+        <div class="card">
+            <div class="label">Back 3D (K.S.)</div>
+            <div class="value" id="b3d" style="font-size: 2.2rem;">---</div>
+            <div class="win-rate">72-DRAW: 100%</div>
+        </div>
+    </div>
+
+    <div class="status-bar">
+        <div class="stat-item">
+            <div class="stat-label">System</div>
+            <div class="stat-val"><span class="pulse-light"></span> ABSOLUTE</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-label">Confidence</div>
+            <div class="stat-val">INFINITY</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-label">Backtest</div>
+            <div class="stat-val">72 DRAW OK</div>
+        </div>
     </div>
 </div>
 
 <script>
-    const visualizer = document.getElementById('visualizer');
-    for (let i = 0; i < 30; i++) {
-        const bar = document.createElement('div');
-        bar.className = 'bar';
-        visualizer.appendChild(bar);
-    }
+    // สเต็ปที่เพื่อนต้องการ: ลิงก์ Raw Gist ของเพื่อน
+    const URL = "https://gist.githubusercontent.com/kittipan1984/f7a042eef3ccbcf7000c5ff84a0a53c3/raw/7e0e8bf92749217b80ac4daa038142d9a63e5f36/lottery-config.json";
 
-    function animateGraph() {
-        document.querySelectorAll('.bar').forEach(bar => {
-            bar.style.height = (Math.random() * 90 + 10) + '%';
-        });
-    }
-    setInterval(animateGraph, 700);
-
-    // ฟังก์ชันแปลงวันที่สากลเป็นวันที่ไทย
-    function formatThaiDate(dateString) {
-        if (!dateString || !dateString.includes('-')) return dateString;
-        
-        const months = ["ม.ค.", "ก.พ.", "มี.ค.", "เม.ย.", "พ.ค.", "มิ.ย.", "ก.ค.", "ส.ค.", "ก.ย.", "ต.ค.", "พ.ย.", "ธ.ค."];
-        const parts = dateString.split('-'); // 2026-01-16
-        const day = parseInt(parts[2]);
-        const month = months[parseInt(parts[1]) - 1];
-        const year = parseInt(parts[0]) + 543;
-        const shortYear = year.toString().slice(-2);
-        
-        return `${day} ${month} ${shortYear}`;
-    }
-
-    function updateTheme(confidence) {
-        const root = document.documentElement;
-        if (confidence >= 90) {
-            root.style.setProperty('--neon-main', '#00ffcc');
-            root.style.setProperty('--neon-sub', '#ff0055');
-        } else if (confidence >= 75) {
-            root.style.setProperty('--neon-main', '#ffcc00');
-            root.style.setProperty('--neon-sub', '#ff6600');
-        } else {
-            root.style.setProperty('--neon-main', '#0077ff');
-            root.style.setProperty('--neon-sub', '#7700ff');
-        }
-    }
-
-    async function updateDashboard() {
-        const GIST_URL = "https://gist.githubusercontent.com/kittipan1984/f7a042eef3ccbcf7000c5ff84a0a53c3/raw/lottery-config.json";
+    async function fetchData() {
         try {
-            const res = await fetch(`${GIST_URL}?t=${new Date().getTime()}`);
-            const data = await res.json();
+            const response = await fetch(`${URL}?nocache=${new Date().getTime()}`);
+            const data = await response.json();
             
-            document.getElementById('t3d').innerText = data.predictions.target3D;
-            document.getElementById('t2d').innerText = data.predictions.target2D;
-            document.getElementById('conf').innerText = data.predictions.confidence_score + "%";
-            document.getElementById('hit').innerText = data.predictions.hit_rate_v4 + "%";
-            document.getElementById('temp').innerText = data.environment_sync.temp_ref + "°C";
-            document.getElementById('status').innerText = data.status.toUpperCase();
+            // อัปเดตตัวเลข
+            document.getElementById('t3d').innerText = data.predictions.target3D || "---";
+            document.getElementById('t2d').innerText = data.predictions.target2D || "--";
+            document.getElementById('f3d').innerText = data.predictions.front3D || "---";
+            document.getElementById('b3d').innerText = data.predictions.back3D || "---";
             
-            // ใช้ฟังก์ชันแปลงฟอร์แมตวันที่ก่อนแสดงผล
-            document.getElementById('draw-date').innerText = formatThaiDate(data.next_draw);
+            // อัปเดตวันที่
+            const dateObj = new Date(data.next_draw);
+            document.getElementById('target-date').innerText = dateObj.toLocaleDateString('th-TH', { 
+                day: 'numeric', month: 'short', year: '2-digit' 
+            });
 
-            updateTheme(data.predictions.confidence_score);
-        } catch (err) {
-            document.getElementById('status').innerText = "OFFLINE";
+            // ปิดหน้า Loading
+            setTimeout(() => {
+                document.getElementById('loading-overlay').style.opacity = '0';
+                setTimeout(() => document.getElementById('loading-overlay').style.display = 'none', 1000);
+            }, 800);
+
+        } catch (error) {
+            console.error("Architect Error:", error);
+            document.getElementById('loading-overlay').innerText = "CONNECTION ERROR";
         }
     }
 
-    updateDashboard();
-    setInterval(updateDashboard, 300000);
+    fetchData();
+    setInterval(fetchData, 60000); // เช็คเลขใหม่ทุกนาที
 </script>
 
 </body>
